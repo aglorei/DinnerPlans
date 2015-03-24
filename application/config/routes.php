@@ -61,5 +61,11 @@ $route['meals/listings/(:num)'] = 'meals/index/$1';
 $route['meals/listings'] = 'meals/index/0';
 $route['meals/listing/(:num)'] = 'meals/show_listing/$1';
 $route['meals/filter'] = 'meals/filter_listing';
+
+
+// for now
+$route['failed'] = 'bids/failed_bid';
+
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
