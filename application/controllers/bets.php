@@ -15,7 +15,7 @@ class Bets extends CI_Controller
     $meal = $this->session->flashdata('meal');
     $meal['img'] = $this->get_meal_img($meal['id']);
     $errors = $this->session->flashdata('error');
-    $this->load->view('failure', array('meal' => $meal, 'error' => $errors));
+    $this->load->view('bets/failure', array('meal' => $meal, 'error' => $errors));
   }
 
   // place a new bet
@@ -52,7 +52,7 @@ class Bets extends CI_Controller
     $bid_count = $this->item_bid_count($item_number);
 
     // determine if the bet is valid
-    if(!valid_bet($bet_amount, $meal, $user_id)
+    if(!valid_bet($bet_amount, $meal, $user_id))
     {
       $this->session->set_flashdata('error', "You have not submitted a valid bet, please try again");
       redirect("failed_bet");
@@ -69,7 +69,7 @@ class Bets extends CI_Controller
     }
 
     // record the new bet into the database
-    if(!$this->bet->add_new_bet(array('user_id' => $user_id), 'meal_id' => $item_number , "bid" => $bet_amount))
+    if(!$this->bet->add_new_bet(array('user_id' => $user_id, 'meal_id' => $item_number , "bid" => $bet_amount)))
     {
       $this->session->set_flashdata("error", "An error occurred, please contact a site administrator");
       redirect("failed_bet");
