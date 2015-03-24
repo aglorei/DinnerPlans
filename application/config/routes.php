@@ -50,6 +50,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 // $route['default_controller'] = 'users]';
-$route['default_controller'] = 'bets/failed_bet]';
+$route['default_controller'] = 'bids/failed_bid]';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -29,8 +29,6 @@ class Meal extends CI_Model
     return $this->db->where('id', $item_number)->get('meals')->row_array();
   }
 
-
-
   // retrieve the current price of the item/meal
   public function current_price($item_number)
   {
@@ -41,24 +39,6 @@ class Meal extends CI_Model
   public function initial_price($item_number)
   {
     return $this->db->where('id', $item_number)->get('meals')->row_array()['initial_price'];
-  }
-
-  // retrieve the current highest bet 
-  public current_max_bet($item_number)
-  {
-    return $this->db->select('bid, id')->from('bids')->where('meal_id', $item_number)->order_by('bid', 'desc')->limit(1)->get()->row_array();
-  }
-
-  // retrieve the total number of bids on item/meal
-  public function item_bid_count($item_number)
-  {
-    return $this->db->where('meal_id', $item_number)->select('count(id) AS total_bids')->from('bids')->get()->row_array()['total_bids'];
-  }
-
-  // insert a new bet into the database
-  public function add_new_bet($array)
-  {
-    return $this->db->insert('')
   }
 
   // update the item/meal
