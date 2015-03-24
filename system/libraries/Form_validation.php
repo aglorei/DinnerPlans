@@ -88,14 +88,14 @@ class CI_Form_validation {
 	 *
 	 * @var string
 	 */
-	protected $_error_prefix	= '<p class="errors">';
+	protected $_error_prefix	= '<label class="text-danger">';
 
 	/**
 	 * End tag for error wrapping
 	 *
 	 * @var string
 	 */
-	protected $_error_suffix	= '</p>';
+	protected $_error_suffix	= '</label>';
 
 	/**
 	 * Custom error message

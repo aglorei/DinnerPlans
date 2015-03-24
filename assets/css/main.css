@@ -2,13 +2,9 @@
 	margin: 0;
 	padding: 0;
 	/*outline: 1px dotted red;*/
-	font-family: 'helvetica neue', arial, verdana, sans-serif;
 }
-.button{
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px #888888;
-    padding: 5px;
-	font-size: 14px;
+h2{
+	color: #606c88;
 }
 	.blue{
 		border: 1px solid #606c88;
@@ -38,18 +34,25 @@
 .navbar{
 	border-bottom: 1px solid #888888;
 }
-	.header>*{
-		height: 60px;
+	.header h2{
+		margin-top: 15px;
 	}
-		.header h2{
-			margin-top: 15px;
+	.header a{
+		text-decoration: none;
+	}
+	.header form, .header .dropdown-toggle{
+		margin: 14px 0;
+	}
+		.dropdown-menu li{
+			margin-bottom: 5px;
 		}
-		.header a{
-			text-decoration: none;
-		}
-		.header form{
-			margin: 14px 0;
-		}
-			.header form *{
-				margin: 0 3px;
-			}
+#myModal label, #myModal input:not(.btn){
+	display: inline-block;
+	margin-bottom: 5px;
+}
+	#myModal form{
+		text-align: left;
+	}
+body{
+	padding-top: 60px;
+}
