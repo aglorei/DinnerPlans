@@ -22,7 +22,7 @@ class Meal extends CI_Model
 
 	function show_meals_by_preferences($prefs)
 	{
-		$query = "SELECT m.meal FROM meals m INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id WHERE o.id IN ($prefs);";
+		$query = "SELECT m.meal FROM meals m INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id WHERE o.id IN (?);";
 		$values = array($category);
 		$result = $this->db->query($query,$values)->result_array();
 		return $result;
