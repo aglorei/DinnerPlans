@@ -1,0 +1,9 @@
+/**{
+	outline: 1px dotted red;
+}*/
+
+/* separate page content from header */
+div.content{
+	margin-top:100px;
+}
+

@@ -1,0 +1,73 @@
+/**{
+	outline: 1px dotted red;
+}*/
+
+/* separate page content from header */
+div.content{
+	margin-top:100px;
+}
+
+	div.categories 	{
+		margin-bottom:25px;
+	}
+
+	div.categories a 	{
+		padding-right:10px;
+	}
+
+	div.categories a:first-child	{
+		padding-left:0px;		
+	}
+
+	div.categories a:after	{
+		padding-left:10px;		
+	}
+
+	form.preferences {
+		display:inline-block;
+		border:1px solid #ccc;
+		padding: 15px;
+	}
+		div.control-group {
+			margin-bottom: 15px;
+		}
+			form.preferences label {
+				display:block;
+				margin-right:8px;
+			}
+
+			form.preferences legend {
+				font-size:14px;			
+				font-weight:bold;
+				margin-bottom: 4px;
+			}
+
+			form.preferences label {
+				display:block;
+				font-weight: normal;
+			}
+
+			form.preferences p {
+				margin-top:10px;
+			}
+
+				img.sm {
+					width:250px;
+					height:175px;
+				}
+
+				img.lg {
+					width:350px;
+					height:250px;
+				}
+
+			form.bid {
+				border:1px solid #ccc;
+				border-radius: 5px 5px 5px 5px;
+			}
+
+			p.meal-description {
+				margin-top:20px;
+			}
+
+		
