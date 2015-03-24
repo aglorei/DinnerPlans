@@ -1,0 +1,10 @@
+.profile-box{
+	outline: 1px solid #888888;
+}
+	.profile-box>*{
+		margin-top: 10px;
+	}
+		#update-users input{
+			display: inline-block;
+			margin-bottom: 10px;
+		}
