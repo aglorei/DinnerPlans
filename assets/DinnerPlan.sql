@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `DinnerPlans`.`images` (
   UNIQUE INDEX `id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
+INSERT INTO DinnerPlans.images (image, file_path, created_at) VALUES ('default_profile', '/assets/images/default_profile.png', NOW());
 
 -- -----------------------------------------------------
 -- Table `DinnerPlans`.`users`
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `DinnerPlans`.`users` (
   `password` VARCHAR(45) NULL,
   `created_at` DATETIME NULL,
   `updated_at` DATETIME NULL,
-  `image_id` INT NOT NULL,
+  `image_id` INT DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   INDEX `fk_users_images1_idx` (`image_id` ASC),
@@ -80,9 +81,6 @@ CREATE TABLE IF NOT EXISTS `DinnerPlans`.`meals` (
   `created_at` DATETIME NULL,
   `current_price` FLOAT NULL,
   `duration` INT NULL,
-  `category_id` INT NOT NULL,
-  `created_at` DATETIME NOT NULL,
-  `updated_at` DATETIME NULL,
   `ended_at` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_items_users_idx` (`user_id` ASC),
@@ -134,90 +132,6 @@ CREATE TABLE IF NOT EXISTS `DinnerPlans`.`options` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `option` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `DinnerPlans`.`watchlists`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DinnerPlans`.`watchlists` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `meal_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `user_id`, `meal_id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `fk_watchlists_users1_idx` (`user_id` ASC),
-  INDEX `fk_watchlists_meals1_idx` (`meal_id` ASC),
-  CONSTRAINT `fk_watchlists_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `DinnerPlans`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_watchlists_meals1`
-    FOREIGN KEY (`meal_id`)
-    REFERENCES `DinnerPlans`.`meals` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `DinnerPlans`.`ingredients`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DinnerPlans`.`ingredients` (
-  `id` INT NOT NULL,
-  `ingredient` VARCHAR(45) NULL,
-  `created_at` VARCHAR(45) NULL,
-  `updated_at` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `DinnerPlans`.`meal_has_ingredients`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DinnerPlans`.`meal_has_ingredients` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `meal_id` INT NOT NULL,
-  `ingredient_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `meal_id`, `ingredient_id`),
-  INDEX `fk_meals_has_ingredients_ingredients1_idx` (`ingredient_id` ASC),
-  INDEX `fk_meals_has_ingredients_meals1_idx` (`meal_id` ASC),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  CONSTRAINT `fk_meals_has_ingredients_meals1`
-    FOREIGN KEY (`meal_id`)
-    REFERENCES `DinnerPlans`.`meals` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_meals_has_ingredients_ingredients1`
-    FOREIGN KEY (`ingredient_id`)
-    REFERENCES `DinnerPlans`.`ingredients` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `DinnerPlans`.`user_has_allergens`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `DinnerPlans`.`user_has_allergens` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `ingredient_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `user_id`, `ingredient_id`),
-  INDEX `fk_users_has_ingredients_ingredients1_idx` (`ingredient_id` ASC),
-  INDEX `fk_users_has_ingredients_users1_idx` (`user_id` ASC),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  CONSTRAINT `fk_users_has_ingredients_users1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `DinnerPlans`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_users_has_ingredients_ingredients1`
-    FOREIGN KEY (`ingredient_id`)
-    REFERENCES `DinnerPlans`.`ingredients` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 

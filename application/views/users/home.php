@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// if login fails, display errors in modal window
 <?php	if (isset($alert))
 		{ ?>
-			alert('<?= $alert['login'] ?>')
+			alert('<?= $alert['login'] ?>');
 <?php	} ?>
 
 		// keep dropdown login open when focusing on form input
@@ -59,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="carousel-caption">
 					<h1>Bon Appétit!</h1>
 					<p class="lead">We're dedicated to bringing people together at the dinner table. Get started by browsing listings of events made by both restaurant professionals and cooking enthusiasts like yourself. Whether it's chef-driven menus or casual dinner parties with new friends, take a look at our hosts' listings and bid for a seat at their table.</p>
-					<p><a class="btn btn-lg btn-primary blue" href="#">Take a look!</a></p>
+					<p><a class="btn btn-lg btn-primary blue" href="/meals/listings">Take a look!</a></p>
 				</div>
 			</div>
 

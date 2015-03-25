@@ -26,21 +26,23 @@ class Users extends CI_Controller
 		// encrypt the post input with the database password as the salt
 		$encrypted_password = (crypt($this->input->post('password', TRUE), $user_info['password']));
 
-		// if they match, assign user_id, first name, and level to session and redirect to dashboard method
+		// if they match, assign id, first name, and level to session
 		if ($encrypted_password == $user_info['password'])
 		{
 			$this->session->set_userdata('id', $user_info['id']);
 			$this->session->set_userdata('first_name', $user_info['first_name']);
 			$this->session->set_userdata('last_name', $user_info['last_name']);
 			$this->session->set_userdata('level', $user_info['level']);
+
+			redirect('/account');
 		}
 		else
 		{
 			$alert['login'] = 'There are no users with these credentials.';
 			$this->session->set_flashdata('alert', $alert);
-		}
 
-		redirect('/');
+			redirect('/');
+		}
 	}
 
 	public function register()
@@ -112,7 +114,7 @@ class Users extends CI_Controller
 			$this->session->set_userdata('last_name', $user['last_name']);
 			$this->session->set_userdata('level', $user['level']);
 
-			redirect('/');
+			redirect('/account');
 		}
 	}
 
@@ -126,17 +128,80 @@ class Users extends CI_Controller
 		// load flashdata if errors exist
 		$view_data = $this->session->flashdata();
 
-		// load user model and query for information
+		// load user model and query for profile info
 		$this->load->model('user');
-		$view_data['user_info'] = $this->user->get_user_by_id($this->session->userdata['id']);
+		$view_data['user_info'] = $this->user->get_user_by_id($this->session->userdata('id'));
+
+		// if admin, give all users as well
+		if($this->session->userdata('level') == 'Admin')
+		{
+			$view_data['admin'] = array('users' => $this->user->get_all_users());
+		}
+
+		// load message model and query for inbox/sent
+		$this->load->model('message');
+		$view_data['messages'] = array(
+			'inbox' => $this->message->inbox($this->session->userdata('id')),
+			'sent' => $this->message->sent($this->session->userdata('id'))
+		);
+
+		// set tab locations in flash data if not set
+		if (!$this->session->flashdata('tab'))
+		{
+			$this->session->set_flashdata('tab', 'dashboard');
+		}
+
+		if ($this->session->flashdata('message_controls'))
+		{
+			$this->session->set_flashdata('message_controls', 'inbox');
+		}
 
 		$this->load->view('/users/account', $view_data);
 	}
 
-	public function update($user_id)
+	public function upload_picture($id)
+	{
+		$config['upload_path'] = './uploads';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size'] = 500;
+		$config['max_width'] = 2400;
+		$config['max_height'] = 2400;
+
+		// load upload library with above config rules
+		$this->load->library('upload', $config);
+
+		// if upload fails to validate, redirect back
+		if (!$this->upload->do_upload())
+		{
+			$errors['upload'] = $this->upload->display_errors();
+
+			$this->session->set_flashdata('errors', $errors);
+
+			redirect('/account');
+		}
+		// else, upload and update database with filepath
+		else
+		{
+			$data = $this->upload->data();
+
+			// var_dump($data);
+
+			$upload = array(
+				'id' => $id,
+				'file_name' => $this->upload->data('file_name')
+			);
+
+			$this->load->model('user');
+			$this->user->upload_picture($upload);
+
+			redirect('/account');
+		}
+	}
+
+	public function update($id)
 	{
 		// if request is not admin or current user, logout
-		if ($this->session->userdata('level') != 'admin' && $this->session->userdata('id') != $user_id)
+		if ($this->session->userdata('level') != 'Admin' && $this->session->userdata('id') != $id)
 		{
 			redirect('/logout');
 		}
@@ -145,8 +210,9 @@ class Users extends CI_Controller
 		$this->form_validation->set_rules('first_name', 'first name', 'trim|required|alpha_dash|min_length[2]');
 		$this->form_validation->set_rules('last_name', 'last name', 'trim|required|alpha_dash|min_length[2]');
 		$this->form_validation->set_rules('email', 'email', 'required|valid_email');
+		$this->form_validation->set_rules('description', 'description', 'max_length[140]');
 
-		// if form fails to validate, redirect to edit($user_id)
+		// if form fails to validate, redirect to edit($id)
 		if (!$this->form_validation->run())
 		{
 			// error collection
@@ -154,6 +220,7 @@ class Users extends CI_Controller
 				'first_name' => form_error('first_name'),
 				'last_name' => form_error('last_name'),
 				'email' => form_error('email'),
+				'description' => form_error('description')
 			);
 			$this->session->set_flashdata('errors', $errors);
 
@@ -162,10 +229,9 @@ class Users extends CI_Controller
 				'first_name' => $this->input->post('first_name'),
 				'last_name' => $this->input->post('last_name'),
 				'email' => $this->input->post('email'),
+				'description' => $this->input->post('description')
 			);
 			$this->session->set_flashdata('errors_input', $errors_input);
-
-			redirect('/account');
 		}
 		else
 		{
@@ -174,14 +240,16 @@ class Users extends CI_Controller
 				'first_name' => $this->input->post('first_name'),
 				'last_name' => $this->input->post('last_name'),
 				'email' => $this->input->post('email'),
-				'user_id' => $user_id
+				'description' => $this->input->post('description'),
+				'id' => $id
 			);
 
 			// load model and update profile information
 			$this->load->model('user');
 			$this->user->update_user($user);
-
-			redirect('/account');
 		}
+
+		$this->session->set_flashdata('tab', $this->session->flashdata('tab'));
+		redirect('/account');
 	}
 }

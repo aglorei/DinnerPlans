@@ -1,10 +1,42 @@
+li a{
+	color: #606c88;
+}
 .profile-box{
 	outline: 1px solid #888888;
 }
 	.profile-box>*{
 		margin-top: 10px;
 	}
-		#update-users input{
+		.profile-box img{
+			height: 237px;
+		}
+		.form-control{
 			display: inline-block;
 			margin-bottom: 10px;
+			resize: none;
 		}
+		.file-upload{
+			position: relative;
+			overflow: hidden;
+			margin: 10px;
+		}
+		.file-upload input[type="file"]{
+			position: absolute;
+			top: 0;
+			right: 0;
+			margin: 0;
+			padding: 0;
+			font-size: 20px;
+			cursor: pointer;
+			opacity: 0;
+			filter: alpha(opacity=0);
+		}
+		.update-privilege{
+			padding-top: 5px;
+		}
+.mail-box{
+	padding: 10px;
+}
+	.mail-box h4{
+		color: #606c88;
+	}
