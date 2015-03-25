@@ -82,6 +82,7 @@ class Meal extends CI_Model
   {		
   	$id = $meal['id'];
   	unset($meal['id']);
+  	$this->db->update('meals')->set('updated_at', NOW());
     return $this->db->where('id', $id)->update('meals', $meal);
   }
 

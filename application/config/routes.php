@@ -63,8 +63,7 @@ $route['meals/filter'] = 'meals/filter_listing';
 
 
 // bid routes
-$route['failed_bid'] = 'bids/failed_bid';
-$route['bid_success'] = 'bids/bid_success';
+$route['after_bid'] = 'bids/after_bid';
 $route['bid'] = 'bids/place_bid';
 
 

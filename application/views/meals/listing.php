@@ -1,6 +1,5 @@
-<?php
+	<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-var_dump($meal);
 	if($meal['initial_price'] == $meal['current_price'])
 	{
 		$current_bid = number_format($meal["initial_price"],2,'.','');
@@ -19,20 +18,28 @@ var_dump($meal);
 	<script src="/assets/js/jquery-2.1.3.min.js"></script>
 	<!-- Latest compiled and minified jquery ui -->
 	<script src="/assets/js/jquery-ui.min.js"></script>
+	<script src="/assets/js/bootstrap.min.js"></script>
 	<!-- Latest compiled and minified CSS -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/meal-listing.css">
-	<script>
+	<script type="text/javascript">
+
+		var lgn = <?php echo json_encode($this->session->userdata('level') ? true : false); ?>;
 	  $(document).ready(function() {
-	    
+	    // time stuff will probably go here;
 	  });
 
+	  $(document).on('submit', '#bid-form', function() {
 
-
+	  	if(!lgn)
+	  	{
+	    	$('#myModal').modal('show');
+	  		return false;
+	  	}
+	  });
 	</script>
-
 </head>
 <body>
 <?php	$this->load->view('./partials/header');?>
@@ -47,7 +54,7 @@ var_dump($meal);
 
 				<h4><?=$bid_phrase?></h4>
 
-				<form action="/bid" name="bid" method="post" class="form-inline">
+				<form action="/bid" name="bid" method="post" class="form-inline" id='bid-form'>
 					<fieldset>
 						<legend>Current Bid: $<?= $current_bid ?></legend>
 						<div class="form-group">

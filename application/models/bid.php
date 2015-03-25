@@ -7,9 +7,8 @@ class Bid extends CI_Model
   // retrieve the current highest bid
   public function current_max_bid($item_number)
   {
-    return $this->db->select('bid, id')->from('bids')->where('meal_id', $item_number)->order_by('bid', 'desc')->limit(1)->get()->row_array()['bid'];
+    return $this->db->where('meal_id', $item_number)->order_by('bid', 'desc')->limit(1)->get('bids')->row_array();
   }
-
 
   // retrieve the total number of bids on item/meal
   public function item_bid_count($item_number)
