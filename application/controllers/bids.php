@@ -15,7 +15,7 @@ class Bids extends CI_Controller
     $meal['img'] = $this->Meal->get_meal_img($meal['id']);
     $meal['end_time'] = strtotime($this->Meal->meal_end_time($meal['id']));
     $header = $this->session->flashdata('header');
-    $bid_message = $this->session->flashdata('message');
+    $bid_message = $this->session->flashdata('bid_message');
     $array = array('meal' => $meal, 'bid_message' => $bid_message, 'header' => $header);
 
     if($this->session->flashdata('winner'))
@@ -94,6 +94,7 @@ class Bids extends CI_Controller
     }
 
     if($user_id == $highest_bid['user_id']) {
+      $this->session->set_flashdata('header', 'Bid Update Success');
       $this->session->set_flashdata('bid_message', 'Your bid amount has been updated');
       redirect("after_bid");
     }
@@ -108,7 +109,7 @@ class Bids extends CI_Controller
     }
 
     // determine if the new bid is the highest bid
-    if($bid_amount > $current_max_bid || ($bid_count && $bid_amount >= $current_max_bid))
+    if($bid_amount > $current_max_bid || (!$bid_count && $bid_amount >= $current_max_bid))
     {
       $meal['current_price'] = $current_max_bid;
       $winner = true;
@@ -139,7 +140,7 @@ class Bids extends CI_Controller
     $dbtime = strtotime($this->Meal->meal_end_time($item_number));
     $curtime = time();
 
-    if($dbtime - $curtime <= 0 || $this->Meal->meal_ended_at($item_number) != NULL)
+    if($curtime - $dbtime <= 0 || $this->Meal->meal_ended_at($item_number) != NULL)
     {
       $this->session->set_flashdata('bid_message', 'This auction has already ended');
       return false;

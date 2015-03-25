@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Meal extends CI_Model 
 {
-
+  // list all current categories
 	function show_categories()
 	{
 		return $this->db->query("SELECT * FROM categories ORDER BY category;")->result_array();
@@ -15,6 +15,7 @@ class Meal extends CI_Model
 		return $this->db->query("SELECT * FROM meals ORDER BY created_at DESC;")->result_array();
 	}
 
+  // order meals by catergory
 	function show_meals_by_category($category)
 	{
 		$query = "SELECT * FROM meals WHERE category_id = ? ORDER BY created_at DESC;";
@@ -23,6 +24,8 @@ class Meal extends CI_Model
 		return $result;
 	}
 
+
+  // order meals by preference
 	function show_meals_by_preferences($prefs)
 	{
 		$query = "SELECT m.meal FROM meals m INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id WHERE o.id IN ($prefs);";
@@ -31,6 +34,7 @@ class Meal extends CI_Model
 		return $result;
 	}
 
+  // show a specific meal
 	function show_meal($id)
 	{
 		$query = "SELECT * FROM meals WHERE id = ?;";
@@ -59,12 +63,6 @@ class Meal extends CI_Model
     return $this->db->where('id', $item_number)->select('ended_at')->get('meals')->row_array()['ended_at'];
   }
 
-  // retrieve all current data on item/meal
-  // public function select_meal($item_number)
-  // {
-  //   return $this->db->where('id', $item_number)->get('meals')->row_array();
-  // }
-
   // retrieve the current price of the item/meal
   public function current_price($item_number)
   {
@@ -77,19 +75,25 @@ class Meal extends CI_Model
     return $this->db->where('id', $item_number)->get('meals')->row_array()['initial_price'];
   }
 
+  // get the name of the chef
+  public function chef_name($id)
+  {
+    $query = "SELECT CONCAT_WS(' ', first_name, last_name) AS chef FROM users LEFT JOIN meals ON meals.user_id = users.id WHERE meals.id = ?";
+    return $this->db->query($query, array($id))->row_array()['chef'];
+  }
+
   // update the item/meal
   public function update_meal($meal)
   {		
   	$id = $meal['id'];
   	unset($meal['id']);
-  	$this->db->update('meals')->set('updated_at', NOW());
     return $this->db->where('id', $id)->update('meals', $meal);
   }
 
   //retrieves a single image for display on the errors page
   public function get_meal_img($item_number)
   { 
-    $query = "SELECT CONCAT(file_path, image) AS img_path FROM images LEFT JOIN meal_has_images ON meal_has_images.image_id = images.id LEFT JOIN meals ON meal_has_images.meal_id = meals.id WHERE meals.id = ? ORDER BY images.created_at DESC LIMIT 1";
+    $query = "SELECT file_path AS img_path FROM images LEFT JOIN meal_has_images ON meal_has_images.image_id = images.id LEFT JOIN meals ON meal_has_images.meal_id = meals.id WHERE meals.id = ? ORDER BY images.created_at DESC LIMIT 1";
 
     $returned = $this->db->query($query, array($item_number))->row_array();
 
@@ -104,7 +108,7 @@ class Meal extends CI_Model
   // retrieve default item/meal image
   public function default_meal_image()
   {
-    $query = "SELECT CONCAT(file_path, image) AS img_path FROM images WHERE id = 1";
+    $query = "SELECT file_path AS img_path FROM images WHERE id = 1";
     return $this->db->query($query)->row_array()['img_path'];
   }
 }

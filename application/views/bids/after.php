@@ -5,8 +5,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   {
     redirect("/");
   }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,13 +17,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script src="/assets/js/jquery-ui.min.js"></script>
   <!-- Latest compiled and minified Bootstrap js -->
   <script src="/assets/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+
+    // if registration fails, display errors in modal window
+<?php if (isset($errors))
+    { ?>
+      $('#myModal').modal('show');
+<?php } ?>
+
+    // if login fails, display errors in modal window
+<?php if (isset($alert))
+    { ?>
+      alert('<?= $alert['login'] ?>')
+<?php } ?>
+
+    // keep dropdown login open when focusing on form input
+    $(document).on('click', '.dropdown-menu', function (e) {
+            e.stopPropagation();
+        });
+
+  });
+
+  </script>
+  <!-- Latest compiled and minified Bootstrap css -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+  <!-- Stylesheet for header partial -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+  <style>
+    .super-pad {
+      padding-top: 50px;
+    }
+  </style>
 </head>
 <body>
+  <?php $this->load->view('partials/header'); ?>
+
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6 col-sm-12">
         <h2><?= $header ?></h2>
-        <a href="/meals/listing/<?= $meal['id'] ?>"><img src="<?= $meal['img'] ?>" alt="Meal Image"></a>
+        <a href="/meals/listing/<?= $meal['id'] ?>" class='img-rounded'><img src="<?= $meal['img'] ?>" alt="Meal Image" height: 200 width: 200></a>
+      </div> <!-- end picture column -->
+
+
+      <div class="col-md-6 col-sm-12 super-pad">
         <p>
           <?= $bid_message ?>
         </p>
@@ -59,8 +97,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               }
             }
            ?>
-      </div>
-    </div>
-  </div>
+      </div> <!-- end of column -->
+    </div> <!-- end of messages row -->
+  </div> <!-- end of container ->
 </body>
 </html>

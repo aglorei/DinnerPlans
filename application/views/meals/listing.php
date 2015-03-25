@@ -1,13 +1,12 @@
 	<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-	if($meal['initial_price'] == $meal['current_price'])
+	if(!$meal['bid_count'])
 	{
 		$current_bid = number_format($meal["initial_price"],2,'.','');
 	}else 
 	{
 		$current_bid = number_format($meal["current_price"] + 5,2,'.','');
 	}
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,9 +26,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script type="text/javascript">
 
 		var lgn = <?php echo json_encode($this->session->userdata('level') ? true : false); ?>;
+		var end_time = <?php echo json_encode($meal['end_time']); ?>;
+	  var doc = $('endtime');
+
 	  $(document).ready(function() {
-	    // time stuff will probably go here;
+
+	  	countdown();
 	  });
+
+	  function countdown()
+	  {
+	  	var diff = Date.now() - end_time;
+	  	var ns = (((3e5-diff) / 1000)>>0);
+			var m = (ns/60)>> 0;
+			var s = ns - m *60;
+			doc.val("Auction Ends: " + m + ":" + ((""+s).length > 1 ? "" : "0") + s + " minutes");
+
+			if(diff > (3e5))
+			{
+				disable_bid_form();
+			}else {
+				//setTimeout(countdown(), 1000);
+			}
+			console.log(diff);
+	  }
+
+	  function disable_bid_form()
+	  {
+	  	var form = document.getElementById('bid-form');
+	  	form,disabled = true;
+	  }
 
 	  $(document).on('submit', '#bid-form', function() {
 
@@ -48,15 +74,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="row content">
 			<div class="col-xs-7">
 				<h3><?=$meal["meal"]?></h3>
-				<img src="/assets/img/meals-placeholder.jpg" class="img-rounded lg">
+				<img src="/assets/img/meals-placeholder.jpg" class="img-rounded">
 			</div>
 			<div class="col-xs-5">
 
-				<h4><?=$bid_phrase?></h4>
+				<h2><?=$bid_phrase?></h2>
 
 				<form action="/bid" name="bid" method="post" class="form-inline" id='bid-form'>
 					<fieldset>
+						<legend>Meal Chef: <a href"#" alt="Chef Profile"><?= $meal['chef']?></a></legend>
+						<legend>Meal Date: <?= $meal['meal_date'] ?></legend>
+						<legend>Current Price: $<?= number_format($meal["current_price"],2,'.','') ?></legend>
 						<legend>Current Bid: $<?= $current_bid ?></legend>
+						<legend id="endtime"></legend>
 						<div class="form-group">
 							<input type="submit" value="Submit a new bid" class="btn blue">
 							<input type="text" name="bid-amount" placeholder="enter your bid" required>
