@@ -29,11 +29,11 @@ class Meals extends CI_Controller
 			// die("no filter");
 		}
 
-		var_dump($meals);
+		// var_dump($meals);
 
 		$categories = $this->Meal->show_categories();
 		$options = $this->Meal->show_options();
-		
+
 		$view_data = array(
 			"meals" => $meals,
 			"categories" => $categories,
@@ -173,4 +173,5 @@ class Meals extends CI_Controller
 		$this->session->sess_destroy();
 		redirect('/');
 	}
+
 }

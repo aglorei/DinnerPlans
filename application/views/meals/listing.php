@@ -69,6 +69,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="row">
 			<div class="meal col-xs-12">			
 				<h2><?=$meal["meal"]?></h2>
+<?php 		// output dietary options, if available
+			if (strlen($meal["options"]))
+			{
+?>
+				<p>(Options available: <?=$meal["options"]?>)</p>
+<?php 
+			}
+?>
 				<p><?=$meal["description"]?></p>
 			</div>
 		</div>		

@@ -20,13 +20,13 @@ class Meal extends CI_Model
 	// return all meals
 	function show_meals()
 	{
-		return $this->db->query("SELECT * FROM meals ORDER BY created_at DESC;")->result_array();
+		return $this->db->query("SELECT m.*,GROUP_CONCAT(' ',o.option) AS options FROM meals m INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id ORDER BY meal_date;")->result_array();
 	}
 
 	// return meals based on category
 	function show_meals_by_category($category)
 	{
-		$query = "SELECT * FROM meals WHERE category_id = ? ORDER BY created_at DESC;";
+		$query = "SELECT m.*,GROUP_CONCAT(' ',o.option) AS options FROM meals m INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id WHERE category_id = ? ORDER BY meal_date;";
 		$values = array($category);
 		$result = $this->db->query($query,$values)->result_array();
 		return $result;
@@ -75,7 +75,11 @@ class Meal extends CI_Model
 	// return meal based on id. (if for some reason meals.user_id isn't set or can't be found, use left join to pull meal info regardless.)
 	function show_meal($id)
 	{
-		$query = "SELECT m.*,u.description AS bio, CONCAT_WS(' ',u.first_name, u.last_name) AS host FROM meals m LEFT JOIN users u on m.user_id = u.id WHERE m.id = ?;";
+		$query = "SELECT m.*,u.description AS bio, CONCAT_WS(' ',u.first_name, u.last_name) AS host, ";
+		$query .= "GROUP_CONCAT(' ',o.option) AS options FROM meals m ";
+		$query .= "INNER JOIN meal_has_options mho on m.id = mho.meal_id ";
+		$query .= "INNER JOIN options o on mho.option_id = o.id LEFT JOIN users u on m.user_id = u.id ";
+		$query .= "WHERE m.id = ?;";
 		$values = array($id);
 		$result = $this->db->query($query,$values)->row_array();
 		return $result;
