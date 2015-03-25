@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// if login fails, display errors in modal window
 <?php	if (isset($alert))
 		{ ?>
-			alert('<?= $alert['login'] ?>')
+			alert('<?= $alert['login'] ?>');
 <?php	} ?>
 
 		// keep dropdown login open when focusing on form input

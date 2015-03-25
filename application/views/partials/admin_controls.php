@@ -1,6 +1,5 @@
 <div class="tab-pane fade in active" id="dashboard">
-<?php	$users = $this->user->get_all_users();
-		foreach ($users as $user)
+<?php	foreach ($users as $user)
 		{ ?>
 		<div class="row">
 			<!-- Profile Information -->

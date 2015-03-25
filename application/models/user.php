@@ -26,6 +26,7 @@ class User extends CI_Model
 	public function upload_picture($upload)
 	{
 		$this->db->query("INSERT INTO images (image, file_path, created_at) VALUES (?, ?, NOW());", array($upload['file_name'], '/uploads/'.$upload['file_name']));
+
 		$this->set_image($upload);
 	}
 
@@ -37,6 +38,11 @@ class User extends CI_Model
 	public function update_user($user)
 	{
 		return $this->db->query("UPDATE users SET first_name=?, last_name=?, email=?, description=?, updated_at=NOW() WHERE id=?;", array($user['first_name'], $user['last_name'], $user['email'], $user['description'], $user['id']));
+	}
+
+	public function match_name($username)
+	{
+		return $this->db->query("SELECT id FROM users WHERE CONCAT_WS(' ', first_name, last_name) = ?;", array($username))->row_array();
 	}
 }
 

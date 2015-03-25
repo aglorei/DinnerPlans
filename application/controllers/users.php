@@ -33,14 +33,17 @@ class Users extends CI_Controller
 			$this->session->set_userdata('first_name', $user_info['first_name']);
 			$this->session->set_userdata('last_name', $user_info['last_name']);
 			$this->session->set_userdata('level', $user_info['level']);
+			$this->session->set_flashdata('tab', 'dashboard');
+
+			redirect('/account');
 		}
 		else
 		{
 			$alert['login'] = 'There are no users with these credentials.';
 			$this->session->set_flashdata('alert', $alert);
-		}
 
-		redirect('/');
+			redirect('/');
+		}
 	}
 
 	public function register()
@@ -126,9 +129,28 @@ class Users extends CI_Controller
 		// load flashdata if errors exist
 		$view_data = $this->session->flashdata();
 
-		// load user model and query for information
+		// load user model and query for profile info
 		$this->load->model('user');
-		$view_data['user_info'] = $this->user->get_user_by_id($this->session->userdata['id']);
+		$view_data['user_info'] = $this->user->get_user_by_id($this->session->userdata('id'));
+
+		// if admin, give all users as well
+		if($this->session->userdata('level') == 'Admin')
+		{
+			$view_data['admin'] = array('users' => $this->user->get_all_users());
+		}
+
+		// load message model and query for inbox/sent
+		$this->load->model('message');
+		$view_data['messages'] = array(
+			'inbox' => $this->message->inbox($this->session->userdata('id')),
+			'sent' => $this->message->sent($this->session->userdata('id'))
+		);
+
+		// set tab if not set
+		if (!$this->session->flashdata('tab'))
+		{
+			$this->session->set_flashdata('tab', 'dashboard');
+		}
 
 		$this->load->view('/users/account', $view_data);
 	}
@@ -206,8 +228,6 @@ class Users extends CI_Controller
 				'description' => $this->input->post('description')
 			);
 			$this->session->set_flashdata('errors_input', $errors_input);
-
-			redirect('/account');
 		}
 		else
 		{
@@ -223,8 +243,9 @@ class Users extends CI_Controller
 			// load model and update profile information
 			$this->load->model('user');
 			$this->user->update_user($user);
-
-			redirect('/account');
 		}
+
+		$this->session->set_flashdata('tab', $this->session->flashdata('tab'));
+		redirect('/account');
 	}
 }
