@@ -1,5 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+var_dump($meal);
+	if($meal['initial_price'] == $meal['current_price'])
+	{
+		$current_bid = number_format($meal["initial_price"],2,'.','');
+	}else 
+	{
+		$current_bid = number_format($meal["current_price"] + 5,2,'.','');
+	}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,9 +24,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 	<link rel="stylesheet" type="text/css" href="/assets/css/meal-listing.css">
+	<script>
+	  $(document).ready(function() {
+	    
+	  });
+
+
+
+	</script>
+
 </head>
 <body>
-<?php	$this->load->view('./partials/header'); ?>
+<?php	$this->load->view('./partials/header');?>
+
 	<div class="container">
 		<div class="row content">
 			<div class="col-xs-7">
@@ -25,14 +44,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<img src="/assets/img/meals-placeholder.jpg" class="img-rounded lg">
 			</div>
 			<div class="col-xs-5">
+
 				<h4><?=$bid_phrase?></h4>
 
-				<form action="" name="bid" method="post" class="form-inline">
+				<form action="/bid" name="bid" method="post" class="form-inline">
 					<fieldset>
-						<legend>Current Bid: $<?=number_format($current_bid["max_bid"],2,'.','')?></legend>
-			
-						<input type="submit" value="Submit a new bid" class="btn blue">
-						<input type="text" placeholder="enter your bid">
+						<legend>Current Bid: $<?= $current_bid ?></legend>
+						<div class="form-group">
+							<input type="submit" value="Submit a new bid" class="btn blue">
+							<input type="text" name="bid-amount" placeholder="enter your bid" required>
+							<input type="hidden" name="meal-id" value="<?= $meal['id']?>">
+						</div>
 					</fieldset>
 				</form>
 			</div>

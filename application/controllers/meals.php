@@ -29,28 +29,22 @@ class Meals extends CI_Controller
 			"categories" => $categories
 		);
 
-		$this->load->view('meals/listings',$view_data);
+		$this->load->view('meals/listings', $view_data);
 	}
 
 	public function show_listing($id)
 	{
 		$meal = $this->Meal->show_meal($id);
 
-		$max_bid = $this->Meal->show_max_bid($id);
 		$bid_phrase = "Make your bid!";
 
-		if(!$max_bid)
+		if($meal['current_price'] == $meal['initial_price'])
 		{
-			$max_bid = 0;
 			$bid_phrase = "Be the first to bid!";
 		}
 
-		// var_dump($max_bid);
-		// die("bid");
-
 		$view_data = array(
 			"meal" => $meal,
-			"current_bid" => $max_bid,
 			"bid_phrase" => $bid_phrase
 		);
 

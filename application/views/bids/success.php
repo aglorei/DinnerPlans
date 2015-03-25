@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>DinnerPlans: Bid Failed</title>
+  <title>DinnerPlans: Bid Success</title>
   <!-- Latest compiled and minified jquery -->
   <script src="/assets/js/jquery-2.1.3.min.js"></script>
   <!-- Latest compiled and minified jquery ui -->
@@ -24,8 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col-lg-6 col-sm-12">
         <h3>Bid Failed for <?= $meal['meal'] ?></h3>
         <a href="/meals/listing/<?= $meal['id'] ?>"><img src="<?= $meal['img'] ?>" alt="meal image"></a>
-        <p><?= $error ?></p>
-        <a href="/meals/listing/<?= $meal['id'] ?>"><button class='btn btn-large btn-primary pull-right'>Back to listing</button></a>
+        <p>Your bid has been successfully entered! <?= $winner ? "You are the current higest bidder" : "Your bid amount was not sufficient to take the lead" ?></p>
+
       </div>
       <div class="col-lg-6 col-sm-12">
         

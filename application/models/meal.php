@@ -38,9 +38,9 @@ class Meal extends CI_Model
 		$result = $this->db->query($query,$values)->row_array();
 		return $result;
 	}
-	
+
   // determine if the item/meal item number is real
-  public function meal_exsits($item_number)
+  public function meal_exists($item_number)
   {
     return $this->db->where('id', $item_number)->count_all_results('meals');
   }
@@ -50,7 +50,7 @@ class Meal extends CI_Model
   {
     $interval = $this->db->where('id', $item_number)->get('meals')->row_array()['duration'];
     $query = "SELECT DATE_ADD(created_at, INTERVAL " . $interval . " DAY) AS end_date FROM meals WHERE id=?";
-    return $this->db->query($query, array('id'=> $item_number))->row_array());
+    return $this->db->query($query, array('id'=> $item_number))->row_array()['end_date'];
   }
 
   //retrieve the date the item ended (may be null)
@@ -88,12 +88,9 @@ class Meal extends CI_Model
   //retrieves a single image for display on the errors page
   public function get_meal_img($item_number)
   { 
-    $query = "SELECT *, CONCAT(file_path, image) AS img_path FROM images " +
-    "LEFT JOIN meal_has_images ON images.id = meal_has_images.images_id " +
-    "LEFT JOIN meals ON meal_has_images.meal_id = meals.id " +
-    "WHERE meals.id = ? ORDER BY created_at LIMIT 1 DESC";
+    $query = "SELECT CONCAT(file_path, image) AS img_path FROM images LEFT JOIN meal_has_images ON meal_has_images.image_id = images.id LEFT JOIN meals ON meal_has_images.meal_id = meals.id WHERE meals.id = ? ORDER BY images.created_at DESC LIMIT 1";
 
-    $returned = $this->db->query($query, array("id", $item_number))->row_array();
+    $returned = $this->db->query($query, array($item_number))->row_array();
 
     if(!count($returned))
     {
@@ -106,7 +103,8 @@ class Meal extends CI_Model
   // retrieve default item/meal image
   public function default_meal_image()
   {
-    return $this->db->select("CONCAT(file_path, image) AS img_path")->from('images')->where('id', 0)->row_array();
+    $query = "SELECT CONCAT(file_path, image) AS img_path FROM images WHERE id = 1";
+    return $this->db->query($query)->row_array()['img_path'];
   }
 }
 
