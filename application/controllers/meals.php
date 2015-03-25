@@ -45,14 +45,23 @@ class Meals extends CI_Controller
 
 	public function show_listing($id)
 	{
+		// retrieve meal info
 		$meal = $this->Meal->show_meal($id);
+
+		// retrieve path to meal image
+		$meal_img = $this->Meal->get_meal_img($id);
 		
-		$max_bid = $this->Meal->current_price($id);		
+		// retrieve current bid
+		$current_bid = $this->Meal->current_price($id);		
 
 		$view_data = array(
 			"meal" => $meal,
-			"current_bid" => $max_bid
+			"meal_img" => $meal_img,
+			"current_bid" => $current_bid
 		);
+
+		// var_dump($view_data);
+		// die("current");
 
 		$this->load->view('meals/listing',$view_data);
 	}

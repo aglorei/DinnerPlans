@@ -1,9 +1,21 @@
 /**{
 	outline: 1px dotted red;
-}*/
-
+}
+*/
 /* separate page content from header */
 div.content{
 	margin-top:100px;
+}
+
+p.description {}
+
+p.options {
+	font-style: oblique;
+}
+
+form.bid {
+	border:1px solid #ccc;
+	border-radius: 15px 15px 15px 15px;
+	padding:15px;
 }
 

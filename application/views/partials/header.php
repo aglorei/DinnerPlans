@@ -9,7 +9,7 @@
 				{ ?>
 					<!-- Regular login viewable on >=.md viewports -->
 					<div class="hidden-xs hidden-sm col-md-10">
-						<form class="navbar-form navbar-right" action="users/logout" method="post">
+						<form class="navbar-form navbar-right" action="/users/logout" method="post">
 							<a class="btn" href="/account" role="button">My Account</a>
 							<label>Welcome <?= $this->session->userdata('first_name') ?>!</label>
 							<input class="blue btn" type="submit" value="Logout" />
@@ -20,7 +20,7 @@
 						<button type="button" class="btn blue dropdown-toggle navbar-right" data-toggle="dropdown" aria-expanded="false">Welcome <?= $this->session->userdata('first_name') ?>! <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu dropdown-menu-right" role="menu">
-							<form class="navbar-form navbar-right" action="users/logout" method="post">
+							<form class="navbar-form navbar-right" action="/users/logout" method="post">
 								<li>
 									<a class="btn" href="/account" role="button">My Account</a>
 									<input class="blue btn" type="submit" value="Logout" />

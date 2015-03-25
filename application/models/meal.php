@@ -35,10 +35,9 @@ class Meal extends CI_Model
 	// return meals based on string of preferences passed in
 	function show_meals_by_preferences($prefs,$prices,$ratings)
 	{
-
 		$valueArr = array();
 		
-		$query = "SELECT DISTINCT m.* FROM meals m";
+		$query = "SELECT m.* , GROUP_CONCAT(' ',o.option) AS options FROM meals m";
 		$query .= " INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id";
 		// $query .= " INNER JOIN users u on m.user_id = u.id ";
 		$query .= " WHERE (0 = 0)";
@@ -73,10 +72,10 @@ class Meal extends CI_Model
 		return $result;
 	}
 
-	// return meal based on id
+	// return meal based on id. (if for some reason meals.user_id isn't set or can't be found, use left join to pull meal info regardless.)
 	function show_meal($id)
 	{
-		$query = "SELECT * FROM meals WHERE id = ?;";
+		$query = "SELECT m.*,u.description AS bio, CONCAT_WS(' ',u.first_name, u.last_name) AS host FROM meals m LEFT JOIN users u on m.user_id = u.id WHERE m.id = ?;";
 		$values = array($id);
 		$result = $this->db->query($query,$values)->row_array();
 		return $result;
@@ -130,26 +129,24 @@ class Meal extends CI_Model
 
   //retrieves a single image for display on the errors page
   public function get_meal_img($item_number)
-  { 
-    $query = "SELECT *, CONCAT(file_path, image) AS img_path FROM images " +
-    "LEFT JOIN meal_has_images ON images.id = meal_has_images.images_id " +
-    "LEFT JOIN meals ON meal_has_images.meal_id = meals.id " +
-    "WHERE meals.id = ? ORDER BY created_at LIMIT 1 DESC";
+ { 
+   $query = "SELECT file_path AS img_path FROM images LEFT JOIN meal_has_images ON meal_has_images.image_id = images.id LEFT JOIN meals ON meal_has_images.meal_id = meals.id WHERE meals.id = ? ORDER BY images.created_at DESC LIMIT 1";
 
-    $returned = $this->db->query($query, array("id", $item_number))->row_array();
+   $returned = $this->db->query($query, array($item_number))->row_array();
 
-    if(!count($returned))
-    {
-      $returned = $this->default_meal_image();
-    }
+   if(!count($returned))
+   {
+     $returned = $this->default_meal_image();
+   }
 
-    return $returned;
-  }
+   return $returned;
+ }
 
-  // retrieve default item/meal image
-  public function default_meal_image()
-  {
-    return $this->db->select("CONCAT(file_path, image) AS img_path")->from('images')->where('id', 0)->row_array();
-  }
+ // retrieve default item/meal image
+ public function default_meal_image()
+ {
+   $query = "SELECT file_path AS img_path FROM images WHERE id = 1";
+   return $this->db->query($query)->row_array()['img_path'];
+ }
 }
 
