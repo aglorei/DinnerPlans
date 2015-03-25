@@ -118,8 +118,6 @@ class Users extends CI_Controller
 
 	public function account()
 	{
-		$this->load->helper('form');
-
 		// redirect any users who are not logged in
 		if (!$this->session->userdata('level'))
 		{
@@ -135,7 +133,7 @@ class Users extends CI_Controller
 		$this->load->view('/users/account', $view_data);
 	}
 
-	public function upload_picture()
+	public function upload_picture($id)
 	{
 		$config['upload_path'] = './uploads';
 		$config['allowed_types'] = 'gif|jpg|png';
@@ -163,7 +161,7 @@ class Users extends CI_Controller
 			// var_dump($data);
 
 			$upload = array(
-				'id' => $this->session->userdata['id'],
+				'id' => $id,
 				'file_name' => $this->upload->data('file_name')
 			);
 
@@ -177,7 +175,7 @@ class Users extends CI_Controller
 	public function update($id)
 	{
 		// if request is not admin or current user, logout
-		if ($this->session->userdata('level') != 'admin' && $this->session->userdata('id') != $id)
+		if ($this->session->userdata('level') != 'Admin' && $this->session->userdata('id') != $id)
 		{
 			redirect('/logout');
 		}
@@ -186,6 +184,7 @@ class Users extends CI_Controller
 		$this->form_validation->set_rules('first_name', 'first name', 'trim|required|alpha_dash|min_length[2]');
 		$this->form_validation->set_rules('last_name', 'last name', 'trim|required|alpha_dash|min_length[2]');
 		$this->form_validation->set_rules('email', 'email', 'required|valid_email');
+		$this->form_validation->set_rules('description', 'description', 'max_length[140]');
 
 		// if form fails to validate, redirect to edit($id)
 		if (!$this->form_validation->run())
@@ -195,6 +194,7 @@ class Users extends CI_Controller
 				'first_name' => form_error('first_name'),
 				'last_name' => form_error('last_name'),
 				'email' => form_error('email'),
+				'description' => form_error('description')
 			);
 			$this->session->set_flashdata('errors', $errors);
 
@@ -203,6 +203,7 @@ class Users extends CI_Controller
 				'first_name' => $this->input->post('first_name'),
 				'last_name' => $this->input->post('last_name'),
 				'email' => $this->input->post('email'),
+				'description' => $this->input->post('description')
 			);
 			$this->session->set_flashdata('errors_input', $errors_input);
 
@@ -215,6 +216,7 @@ class Users extends CI_Controller
 				'first_name' => $this->input->post('first_name'),
 				'last_name' => $this->input->post('last_name'),
 				'email' => $this->input->post('email'),
+				'description' => $this->input->post('description'),
 				'id' => $id
 			);
 

@@ -21,16 +21,6 @@ h2{
 		background-color: darkred;
 		color: white;
 	}
-	.gold{
-		border: 1px solid #E7B84C;
-		background-color: #E7B84C;
-		color: white;
-	}
-	.gray{
-		border: 1px solid #888888;
-		background-color: #888888;
-		color: white;
-	}
 .navbar{
 	border-bottom: 1px solid #888888;
 }
