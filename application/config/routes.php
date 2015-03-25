@@ -50,12 +50,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
-
-// $route['default_controller'] = 'bids/failed_bid]';
 $route['default_controller'] = 'users';
 
 $route['account'] = '/users/account';
 
+// meal routes
 $route['meals/view_listing/(:num)'] = 'meals/show/$1';
 $route['meals/listings/(:num)'] = 'meals/index/$1';
 $route['meals/listings'] = 'meals/index/';
@@ -63,8 +62,9 @@ $route['meals/listing/(:num)'] = 'meals/show_listing/$1';
 $route['meals/filter'] = 'meals/index';
 
 
-// for now
-$route['failed'] = 'bids/failed_bid';
+// bid routes
+$route['after_bid'] = 'bids/after_bid';
+$route['bid'] = 'bids/place_bid';
 
 
 $route['404_override'] = '';

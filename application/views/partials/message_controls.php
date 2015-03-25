@@ -2,9 +2,9 @@
 	<div class="row">
 		<div class="col-xs-12 col-sm-3">
 			<ul class="nav nav-stacked nav-tabs" role="tablist">
-				<li role="presentation" class="active"><a href="#inbox" data-toggle="tab">Inbox</a></li>
-				<li role="presentation"><a href="#sent" data-toggle="tab">Sent</a></li>
-				<li role="presentation"><a href="#compose" data-toggle="tab">Compose</a></li>
+				<li id="inbox-tab" role="presentation" class="active"><a href="#inbox" data-toggle="tab">Inbox</a></li>
+				<li id="sent-tab" role="presentation"><a href="#sent" data-toggle="tab">Sent</a></li>
+				<li id="compose-tab" role="presentation"><a href="#compose" data-toggle="tab">Compose</a></li>
 			</ul>
 		</div>
 		<div class="col-xs-12 col-sm-9">
@@ -25,6 +25,10 @@
 								<input type="hidden" name="to" value="<?= $mail['from_user'] ?>">
 								<!-- Message -->
 								<label class="text-muted" for="message">Reply:</label>
+<?php							if (isset($errors['message']))
+								{
+									echo $errors['message'];
+								} ?>
 								<textarea class="form-control" name="message"></textarea>
 								<!-- Submit Form -->
 								<input class="btn blue" type="submit" value="Reply" />

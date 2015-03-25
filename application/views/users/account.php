@@ -19,6 +19,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#<?= $this->session->flashdata('tab') ?>-tab').addClass('active');
 		$('#<?= $this->session->flashdata('tab') ?>').addClass('active');
 
+		// set messages nested tab navigation via 'message_form' in flashdata
+		$('#<?= $this->session->flashdata('message_form') ?>-tab').addClass('active');
+		$('#<?= $this->session->flashdata('message_form') ?>').addClass('active');
+
 	});
 
 	</script>

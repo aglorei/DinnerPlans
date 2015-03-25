@@ -9,6 +9,7 @@ class Meals extends CI_Controller
 	    $this->load->model("Meal");
 	}
 
+	// will load all meals, order by category if needed
 	public function index($category=0)
 	{
 		if(!empty($this->input->post()))
@@ -40,24 +41,31 @@ class Meals extends CI_Controller
 			"options" => $options
 		);
 
-		$this->load->view('meals/listings',$view_data);
+		$this->load->view('meals/listings', $view_data);
 	}
 
+	// show a single meal
 	public function show_listing($id)
 	{
 		// retrieve meal info
 		$meal = $this->Meal->show_meal($id);
 
-		// retrieve path to meal image
-		$meal_img = $this->Meal->get_meal_img($id);
-		
-		// retrieve current bid
-		$current_bid = $this->Meal->current_price($id);		
+		$bid_phrase = "Make your bid!";
+
+		$this->load->model('Bid');
+		$meal['bid_count'] = $this->Bid->item_bid_count($meal['id']);
+		$meal['chef'] = $this->Meal->chef_name($meal['id']);
+		$meal['end_time'] = strtotime($this->Meal->meal_end_time($meal['id']));
+		$meal['img'] = $this->Meal->get_meal_img($meal['id']);
+
+		if(!$meal['bid_count'])
+		{
+			$bid_phrase = "Be the first to bid!";
+		}
 
 		$view_data = array(
 			"meal" => $meal,
-			"meal_img" => $meal_img,
-			"current_bid" => $current_bid
+			"bid_phrase" => $bid_phrase
 		);
 
 		// var_dump($view_data);
@@ -109,7 +117,7 @@ class Meals extends CI_Controller
 		{
 			$lowPrice = $pricesArr[0];
 			$highPrice = $pricesArr[count($pricesArr) - 1];
-		
+
 			// set corresponding dollar amounts for prices
 			switch($lowPrice)
 			{
@@ -145,12 +153,12 @@ class Meals extends CI_Controller
 		{
 			$prefs = implode(",",$prefsArr);
 		}
-		
+
 		if(count($ratingsArr))
 		{
 			$ratings = implode(",",$ratingsArr);
 		}
-		
+
 		$prices = array(
 			"lowPrice" => $lowPrice,
 			"highPrice" => $highPrice
@@ -167,11 +175,4 @@ class Meals extends CI_Controller
 		$meals = $this->Meal->show_meals_by_preferences($prefs,$prices,$ratings);
 		return $meals;
 	}
-	
-	public function logout()
-	{
-		$this->session->sess_destroy();
-		redirect('/');
-	}
-
 }

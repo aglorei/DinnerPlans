@@ -26,14 +26,13 @@ class Users extends CI_Controller
 		// encrypt the post input with the database password as the salt
 		$encrypted_password = (crypt($this->input->post('password', TRUE), $user_info['password']));
 
-		// if they match, assign id, first name, and level to session and redirect to dashboard method
+		// if they match, assign id, first name, and level to session
 		if ($encrypted_password == $user_info['password'])
 		{
 			$this->session->set_userdata('id', $user_info['id']);
 			$this->session->set_userdata('first_name', $user_info['first_name']);
 			$this->session->set_userdata('last_name', $user_info['last_name']);
 			$this->session->set_userdata('level', $user_info['level']);
-			$this->session->set_flashdata('tab', 'dashboard');
 
 			redirect('/account');
 		}
@@ -115,7 +114,7 @@ class Users extends CI_Controller
 			$this->session->set_userdata('last_name', $user['last_name']);
 			$this->session->set_userdata('level', $user['level']);
 
-			redirect('/');
+			redirect('/account');
 		}
 	}
 
@@ -146,10 +145,15 @@ class Users extends CI_Controller
 			'sent' => $this->message->sent($this->session->userdata('id'))
 		);
 
-		// set tab if not set
+		// set tab locations in flash data if not set
 		if (!$this->session->flashdata('tab'))
 		{
 			$this->session->set_flashdata('tab', 'dashboard');
+		}
+
+		if ($this->session->flashdata('message_controls'))
+		{
+			$this->session->set_flashdata('message_controls', 'inbox');
 		}
 
 		$this->load->view('/users/account', $view_data);

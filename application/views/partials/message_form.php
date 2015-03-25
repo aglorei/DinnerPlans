@@ -5,10 +5,18 @@
 
 	<!-- To -->
 	<label class="text-muted" for="from">To:</label>
+<?php	if (isset($errors['to']))
+		{
+			echo $errors['to'];
+		} ?>
 	<input class="form-control" type="text" name="to" />
 
 	<!-- Message -->
 	<label class="text-muted" for="message">Message:</label>
+<?php	if (isset($errors['message']))
+		{
+			echo $errors['message'];
+		} ?>
 	<textarea class="form-control" name="message"></textarea>
 
 	<!-- Submit Form -->

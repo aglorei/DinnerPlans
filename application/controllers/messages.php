@@ -18,7 +18,7 @@ class Messages extends CI_Controller
 		{
 			// error collection
 			$errors = array(
-				'to' => 'There are no users by that name.',
+				'to' => '<label class="text-danger">There are no users by that name.</label>',
 				'message' => form_error('message')
 			);
 			$this->session->set_flashdata('errors', $errors);
@@ -45,6 +45,7 @@ class Messages extends CI_Controller
 		}
 
 		$this->session->set_flashdata('tab', 'messages');
+		$this->session->set_flashdata('message_controls', $this->session->flashdata('message_controls'));
 		redirect('/account');
 	}
 
