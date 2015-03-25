@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<img src="/assets/img/meals-placeholder.jpg" class="img-rounded lg">
 			</div>
 			<div class="col-xs-5">
-				<h4><?=$bid_phrase?></h4>
+				<h4>Make a bid!</h4>
 
 				<form action="" name="bid" method="post" class="form-inline">
 					<fieldset>

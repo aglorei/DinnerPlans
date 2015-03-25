@@ -37,25 +37,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<legend>Refine Your Listings</legend>
 						<div class="control-group">
 							<p>Dietary Preferences</p>
-							<label><input name="dietary_1" type="checkbox" value="1"> Vegetarian</label>						
-							<label><input name="dietary_2" type="checkbox" value="2"> Gluten-free</label>		
-							<label><input name="dietary_3" type="checkbox" value="3"> Paleo</label>		
+<?php
+						foreach ($options as $option) 
+						{
+?>
+							<label><input name="dietary_<?=$option["id"]?>" type="checkbox" value="<?=$option["id"]?>"> <?=$option["option"]?></label>						
+<?php
+						}
+?>
 						</div>			
 
 						<div class="control-group">
 							<p>Price:</p>						
-							<label><input name="price_1" type="checkbox" value="1"> $</label>
-							<label><input name="price_2" type="checkbox" value="2"> $$</label>
-							<label><input name="price_3" type="checkbox" value="3"> $$$</label>
-							<label><input name="price_4" type="checkbox" value="4"> $$$$</label>
+							<label><input name="price_1" type="checkbox" value="1"> $ ($0-50)</label>
+							<label><input name="price_2" type="checkbox" value="2"> $$ ($50-100) </label>
+							<label><input name="price_3" type="checkbox" value="3"> $$$ ($100-150)</label>
+							<label><input name="price_4" type="checkbox" value="4"> $$$$ ($150-200)</label>
 						</div>
 
 						<div class="control-group">
 							<p>Ratings:</p>						
-							<label><input name="star_1" type="checkbox" value="1"> 1 star +</label>						
-							<label><input name="star_2" type="checkbox" value="2"> 2 star +</label>						
-							<label><input name="star_3" type="checkbox" value="3"> 3 star +</label>						
-							<label><input name="star_4" type="checkbox" value="4"> 4 star +</label>
+							<label><input name="rating_1" type="checkbox" value="1"> 1 star +</label>						
+							<label><input name="rating_2" type="checkbox" value="2"> 2 star +</label>						
+							<label><input name="rating_3" type="checkbox" value="3"> 3 star +</label>						
+							<label><input name="rating_4" type="checkbox" value="4"> 4 star +</label>
 						</div>							
 						<input type="submit" value="search" class="button blue">
 					</fieldset>

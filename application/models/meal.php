@@ -5,16 +5,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Meal extends CI_Model 
 {
 
+	// return all categories
 	function show_categories()
 	{
 		return $this->db->query("SELECT * FROM categories ORDER BY category;")->result_array();
 	}
 
+	// return all (dietary) options
+	function show_options()
+	{
+		return $this->db->query("SELECT * FROM options;")->result_array();
+	}
+
+	// return all meals
 	function show_meals()
 	{
 		return $this->db->query("SELECT * FROM meals ORDER BY created_at DESC;")->result_array();
 	}
 
+	// return meals based on category
 	function show_meals_by_category($category)
 	{
 		$query = "SELECT * FROM meals WHERE category_id = ? ORDER BY created_at DESC;";
@@ -23,14 +32,48 @@ class Meal extends CI_Model
 		return $result;
 	}
 
-	function show_meals_by_preferences($prefs)
+	// return meals based on string of preferences passed in
+	function show_meals_by_preferences($prefs,$prices,$ratings)
 	{
-		$query = "SELECT m.meal FROM meals m INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id WHERE o.id IN (?);";
-		$values = array($category);
+
+		$valueArr = array();
+		
+		$query = "SELECT DISTINCT m.* FROM meals m";
+		$query .= " INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id";
+		// $query .= " INNER JOIN users u on m.user_id = u.id ";
+		$query .= " WHERE (0 = 0)";
+
+		if(strlen($prefs) > 0)
+		{
+			$query .= " AND mho.id IN (?)";
+			array_push($valueArr,$prefs);
+		}
+
+		if(count($prices) > 0)
+		{
+			$query .= " AND (m.initial_price > ? AND m.initial_price <= ?)";
+			array_push($valueArr,$prices["lowPrice"],$prices["highPrice"]);
+		}
+
+		// hold on to this
+		// if(strlen($ratings) > 0)
+		// {
+		// 	$query .= "AND u.rating >= ?";
+		// 	array_push($valueArr,$rating);
+		// }
+
+		$values = $valueArr;
+
+		// var_dump($query);
+		// var_dump($values);
+		// die("query in model");
+
 		$result = $this->db->query($query,$values)->result_array();
+				
 		return $result;
 	}
 
+	// return meal based on id
 	function show_meal($id)
 	{
 		$query = "SELECT * FROM meals WHERE id = ?;";
@@ -50,7 +93,7 @@ class Meal extends CI_Model
   {
     $interval = $this->db->where('id', $item_number)->get('meals')->row_array()['duration'];
     $query = "SELECT DATE_ADD(created_at, INTERVAL " . $interval . " DAY) AS end_date FROM meals WHERE id=?";
-    return $this->db->query($query, array('id'=> $item_number))->row_array());
+    return $this->db->query($query, array('id'=> $item_number))->row_array();
   }
 
   //retrieve the date the item ended (may be null)
