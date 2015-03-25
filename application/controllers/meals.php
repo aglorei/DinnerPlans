@@ -11,6 +11,8 @@ class Meals extends CI_Controller
 	    $this->load->model("Meal");
 	}
 
+
+	// will load all meals, order by category if needed
 	public function index($category)
 	{
 		if($category)
@@ -29,28 +31,28 @@ class Meals extends CI_Controller
 			"categories" => $categories
 		);
 
-		$this->load->view('meals/listings',$view_data);
+		$this->load->view('meals/listings', $view_data);
 	}
 
+	// show a single meal
 	public function show_listing($id)
 	{
 		$meal = $this->Meal->show_meal($id);
 
-		$max_bid = $this->Meal->show_max_bid($id);
 		$bid_phrase = "Make your bid!";
 
-		if(!$max_bid)
+		$this->load->model('Bid');
+		$meal['bid_count'] = $this->Bid->item_bid_count($meal['id']);
+		$meal['chef'] = $this->Meal->chef_name($meal['id']);
+		$meal['end_time'] = strtotime($this->Meal->meal_end_time($meal['id']));
+
+		if(!$meal['bid_count'])
 		{
-			$max_bid = 0;
 			$bid_phrase = "Be the first to bid!";
 		}
 
-		// var_dump($max_bid);
-		// die("bid");
-
 		$view_data = array(
 			"meal" => $meal,
-			"current_bid" => $max_bid,
 			"bid_phrase" => $bid_phrase
 		);
 
@@ -60,13 +62,10 @@ class Meals extends CI_Controller
 	public function filter_listing()
 	{
 
-		var_dump($this->input->post());
-		die("");
 		$prefsString = "";
 
 		foreach($this->input->post() as $pref)
 		{
-			// $value = substr($pref, -1, 1); // gets id of preference from end of name
 			
 			if(substr($pref,0,-2) == "dietary")
 			{
@@ -74,27 +73,12 @@ class Meals extends CI_Controller
 			}
 		}
 
-		// var_dump($prefsString);
-		// die("prefs");
-
 		$meal = $this->Meal->show_meals_by_preferences($prefs);
-
-		// var_dump($max_bid);
-		// die("bid");
 
 		$view_data = array(
 			"meal" => $meal
 		);
 
 		$this->load->view('meals/listing');
-	}
-
-	
-
-	public function logout()
-	{
-		$this->session->sess_destroy();
-
-		redirect('/');
 	}
 }

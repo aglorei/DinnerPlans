@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `DinnerPlans`.`meals` (
   `created_at` DATETIME NULL,
   `current_price` FLOAT NULL,
   `duration` INT NULL,
+  `ended_at` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_items_users_idx` (`user_id` ASC),
   INDEX `fk_items_categories1_idx` (`category_id` ASC),
