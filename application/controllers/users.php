@@ -26,7 +26,7 @@ class Users extends CI_Controller
 		// encrypt the post input with the database password as the salt
 		$encrypted_password = (crypt($this->input->post('password', TRUE), $user_info['password']));
 
-		// if they match, assign user_id, first name, and level to session and redirect to dashboard method
+		// if they match, assign id, first name, and level to session and redirect to dashboard method
 		if ($encrypted_password == $user_info['password'])
 		{
 			$this->session->set_userdata('id', $user_info['id']);
@@ -118,6 +118,8 @@ class Users extends CI_Controller
 
 	public function account()
 	{
+		$this->load->helper('form');
+
 		// redirect any users who are not logged in
 		if (!$this->session->userdata('level'))
 		{
@@ -133,10 +135,49 @@ class Users extends CI_Controller
 		$this->load->view('/users/account', $view_data);
 	}
 
-	public function update($user_id)
+	public function upload_picture()
+	{
+		$config['upload_path'] = './uploads';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size'] = 500;
+		$config['max_width'] = 2400;
+		$config['max_height'] = 2400;
+
+		// load upload library with above config rules
+		$this->load->library('upload', $config);
+
+		// if upload fails to validate, redirect back
+		if (!$this->upload->do_upload())
+		{
+			$errors['upload'] = $this->upload->display_errors();
+
+			$this->session->set_flashdata('errors', $errors);
+
+			redirect('/account');
+		}
+		// else, upload and update database with filepath
+		else
+		{
+			$data = $this->upload->data();
+
+			// var_dump($data);
+
+			$upload = array(
+				'id' => $this->session->userdata['id'],
+				'file_name' => $this->upload->data('file_name')
+			);
+
+			$this->load->model('user');
+			$this->user->upload_picture($upload);
+
+			redirect('/account');
+		}
+	}
+
+	public function update($id)
 	{
 		// if request is not admin or current user, logout
-		if ($this->session->userdata('level') != 'admin' && $this->session->userdata('id') != $user_id)
+		if ($this->session->userdata('level') != 'admin' && $this->session->userdata('id') != $id)
 		{
 			redirect('/logout');
 		}
@@ -146,7 +187,7 @@ class Users extends CI_Controller
 		$this->form_validation->set_rules('last_name', 'last name', 'trim|required|alpha_dash|min_length[2]');
 		$this->form_validation->set_rules('email', 'email', 'required|valid_email');
 
-		// if form fails to validate, redirect to edit($user_id)
+		// if form fails to validate, redirect to edit($id)
 		if (!$this->form_validation->run())
 		{
 			// error collection
@@ -174,7 +215,7 @@ class Users extends CI_Controller
 				'first_name' => $this->input->post('first_name'),
 				'last_name' => $this->input->post('last_name'),
 				'email' => $this->input->post('email'),
-				'user_id' => $user_id
+				'id' => $id
 			);
 
 			// load model and update profile information

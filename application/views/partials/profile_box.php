@@ -1,18 +1,26 @@
 <div class="tab-pane fade in active" id="dashboard">
 	<div class="row">
 		<!-- Profile Information -->
-		<div class="profile-box col-xs-8 col-md-4">
+		<div class="profile-box col-xs-8 col-sm-6 col-md-4">
 			<!-- Thumbnail and About Me -->
 			<div class="row">
 				<div class="col-xs-6">
-					<img class="img-thumbnail" src="/assets/images/default_profile.png" alt="/assets/images/default_profile.png">
+					<img class="img-thumbnail" src="<?= $file_path ?>" alt="/assets/images/default_profile.png">
 				</div>
 				<div class="col-xs-6">
 					<p>A long winded description about my friends and how much I love eating out all the time like that's who I am. I love this a lot.</p>
 				</div>
 			</div>
 			<!-- Upload Photo -->
-			<p><a href="#" class="btn btn-block blue" role="button">Upload Profile Picture</a></p>
+<?php		if (isset($errors['upload']))
+			{
+				echo $errors['upload'];
+			} ?>
+			<form id="upload-picture" action="/users/upload_picture" enctype="multipart/form-data" method="post">
+				<input class="btn btn-block" type="file" name="userfile" size="10" />
+				<input class="btn btn-block blue" type="submit" value="Upload Profile Picture" />
+			</form>
+			<!-- Registration Date -->
 			<strong><?= $level ?>, registered <?= $days ?> days ago</strong>
 			<!-- Update Profile Form -->
 			<form id="update-users" action="/users/update/<?= $this->session->userdata('id') ?>" method="post">
