@@ -29,7 +29,7 @@ class Meals extends CI_Controller
 			// die("no filter");
 		}
 
-		// var_dump($meals);
+		var_dump($meals);
 
 		$categories = $this->Meal->show_categories();
 		$options = $this->Meal->show_options();

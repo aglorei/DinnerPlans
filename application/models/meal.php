@@ -35,6 +35,14 @@ class Meal extends CI_Model
 	// return meals based on string of preferences passed in
 	function show_meals_by_preferences($prefs,$prices,$ratings)
 	{
+		echo "prefs: ";
+		var_dump($prefs);
+		echo "prices:";
+		var_dump($prices);
+		echo "ratings";
+		var_dump($ratings);
+		
+
 		$valueArr = array();
 		
 		$query = "SELECT m.* , GROUP_CONCAT(' ',o.option) AS options FROM meals m";
@@ -69,6 +77,8 @@ class Meal extends CI_Model
 
 		$result = $this->db->query($query,$values)->result_array();
 				
+		var_dump($result);
+		die("in model");
 		return $result;
 	}
 
