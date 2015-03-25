@@ -2,22 +2,50 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 	<meta charset="UTF-8">
-	<title>DinnerPlans | Dinner Listings</title>
+	<title>DinnerPlans</title>
 	<!-- Latest compiled and minified jquery -->
 	<script src="/assets/js/jquery-2.1.3.min.js"></script>
 	<!-- Latest compiled and minified jquery ui -->
 	<script src="/assets/js/jquery-ui.min.js"></script>
-	<!-- Latest compiled and minified CSS -->
+	<!-- Latest compiled and minified Bootstrap js -->
+	<script src="/assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		// if registration fails, display errors in modal window
+<?php	if (isset($errors))
+		{ ?>
+			$('#myModal').modal('show');
+<?php	} ?>
+
+		// if login fails, display errors in modal window
+<?php	if (isset($alert))
+		{ ?>
+			alert('<?= $alert['login'] ?>')
+<?php	} ?>
+
+		// keep dropdown login open when focusing on form input
+		$(document).on('click', '.dropdown-menu', function (e) {
+            e.stopPropagation();
+        });
+
+	});
+
+	</script>
+	<!-- Latest compiled and minified Bootstrap css -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+	<!-- Stylesheet for header partial -->
 	<link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+	<!-- Stylesheet for this view -->
 	<link rel="stylesheet" type="text/css" href="/assets/css/meal-listings.css">
 </head>
 <body>
-<?php	$this->load->view('./partials/header'); ?>
+<?php	$this->load->view('partials/header'); ?>
 	<div class="container">
 
 		<div class="row content">
@@ -37,27 +65,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<legend>Refine Your Listings</legend>
 						<div class="control-group">
 							<p>Dietary Preferences</p>
-							<label><input name="dietary_1" type="checkbox" value="1"> Vegetarian</label>						
-							<label><input name="dietary_2" type="checkbox" value="2"> Gluten-free</label>		
-							<label><input name="dietary_3" type="checkbox" value="3"> Paleo</label>		
-						</div>			
-
+<?php
+						foreach ($options as $option) 
+						{
+?>
+							<label><input name="dietary_<?=$option["id"]?>" type="checkbox" value="<?=$option["id"]?>"> <?=$option["option"]?></label>						
+<?php
+						}
+?>
+						</div>	
 						<div class="control-group">
 							<p>Price:</p>						
-							<label><input name="price_1" type="checkbox" value="1"> $</label>
-							<label><input name="price_2" type="checkbox" value="2"> $$</label>
-							<label><input name="price_3" type="checkbox" value="3"> $$$</label>
-							<label><input name="price_4" type="checkbox" value="4"> $$$$</label>
+							<label><input name="price_1" type="checkbox" value="1"> $ ($0-50)</label>
+							<label><input name="price_2" type="checkbox" value="2"> $$ ($50-100) </label>
+							<label><input name="price_3" type="checkbox" value="3"> $$$ ($100-150)</label>
+							<label><input name="price_4" type="checkbox" value="4"> $$$$ ($150-200)</label>
 						</div>
-
 						<div class="control-group">
 							<p>Ratings:</p>						
-							<label><input name="star_1" type="checkbox" value="1"> 1 star +</label>						
-							<label><input name="star_2" type="checkbox" value="2"> 2 star +</label>						
-							<label><input name="star_3" type="checkbox" value="3"> 3 star +</label>						
-							<label><input name="star_4" type="checkbox" value="4"> 4 star +</label>
+							<label><input name="rating_1" type="checkbox" value="1"> 1 star +</label>						
+							<label><input name="rating_2" type="checkbox" value="2"> 2 star +</label>						
+							<label><input name="rating_3" type="checkbox" value="3"> 3 star +</label>						
+							<label><input name="rating_4" type="checkbox" value="4"> 4 star +</label>
 						</div>							
-						<input type="submit" value="search" class="button blue">
+						<input type="submit" value="search" class="btn blue">
 					</fieldset>
 				</form>
 			</div><!-- end search form -->
@@ -73,7 +104,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<a href="/meals/listing/<?=$meal["id"]?>"><img src="/assets/img/meals-placeholder.jpg" class="img-rounded sm"></a>
 						<h5><strong><?=$meal["meal"]?></strong></h5>
 
-						<p><?=$meal["description"]?></p>
+						<p class="description"><?=$meal["description"]?></p>
+
+						<p><em>(Options available: <?=$meal["options"]?>)</em></p>
 
 						<div class="row">
 							<div class="col-xs-6">

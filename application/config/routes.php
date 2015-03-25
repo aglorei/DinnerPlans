@@ -58,9 +58,9 @@ $route['account'] = '/users/account';
 
 $route['meals/view_listing/(:num)'] = 'meals/show/$1';
 $route['meals/listings/(:num)'] = 'meals/index/$1';
-$route['meals/listings'] = 'meals/index/0';
+$route['meals/listings'] = 'meals/index/';
 $route['meals/listing/(:num)'] = 'meals/show_listing/$1';
-$route['meals/filter'] = 'meals/filter_listing';
+$route['meals/filter'] = 'meals/index';
 
 
 // for now
