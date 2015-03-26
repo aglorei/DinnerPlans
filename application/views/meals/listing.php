@@ -95,11 +95,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	  function disable_bidding()
 	  {
-	  	var form = $('#bid-form').children();
 
-	  	form.children('input[type="submit"]').prop('disabled', true);
-	  	form.children('input[type="text"]').prop('disabled', true);
-	  	form.children('input[type="text"]').attr('placeholder', "Bidding complete");
+			$('#bid-button').prop('disabled', true);
+			$('#bid-box').prop('disabled', true);
+			$('#bid-box').attr('placeholder', "Bidding complete");
 	  }
 
 	  $(document).on('submit', '#bid-form', function() {
@@ -119,6 +118,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tbody:last-child {
 				border: 0;
 			}
+			.img-container {
+				height: 400px;
+			}
 	</style>
 </head>
 <body>
@@ -126,10 +128,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<div class="container">
 		<div class="row content">
-			<div class="col-xs-7">
-				<img src="<?= $meal['img'] ?>" class="img-rounded">
-			</div>
-			<div class="col-xs-5">
+			<div class="col-xs-12 col-lg-7">
+				<div>
+					<img src="<?= $meal['img'] ?>" class="img-rounded img-container" alt='Meal Image'>
+				</div> <!-- end of image container -->
+			</div> <!-- end of image column -->
+			<div class="col-xs-12 col-lg-5">
 
 				<h2><?=$bid_phrase?></h2>
 
@@ -170,22 +174,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<tr>
 									<form action="/bid" name="bid" method="post" class="form-inline" id='bid-form'>
 										<div class="form-group">
-											<td><input type="submit" value="Submit a new bid" class="btn blue"></td>
+											<td><input type="submit" value="Submit a new bid" class="btn blue" id="bid-button"></td>
 											<td>
-												<input type="text" name="bid-amount" placeholder="enter your bid" required>
+												<input type="text" name="bid-amount" placeholder="enter your bid" id="bid-box" required>
 												<input type="hidden" name="meal-id" value="<?= $meal['id']?>">
 											</td>
 										</div>
 									</form>
 								</tr>
 							</tbody>
-						</table>
+						</table> <!-- end of info table -->
 					</fieldset>
 			</div>
 			<div class="bid col-xs-5">
 				<h3>About Your Host: <?=$meal["host"]?></h3>
 				<p><?=$meal["bio"]?></p>
-			</div>
+			</div> <!-- end of bio column -->
 		</div>
 		<div class="row">
 			<div class="meal col-xs-12">

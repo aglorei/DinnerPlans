@@ -12,13 +12,13 @@ class Bids extends CI_Controller
   public function after_bid()
   {
     $meal = $this->session->flashdata('meal');
-    $meal['img'] = $this->Meal->get_meal_img($meal['id']);
+    $meal['img'] = $this->Meal->get_meal_img($meal['id'])['img_path'];
     $meal['end_time'] = strtotime($this->Meal->meal_end_time($meal['id']));
     $header = $this->session->flashdata('header');
     $bid_message = $this->session->flashdata('bid_message');
     $array = array('meal' => $meal, 'bid_message' => $bid_message, 'header' => $header);
 
-    if($this->session->flashdata('winner'))
+    if($this->session->flashdata('winner') || $this->session->flashdata('winner') === false)
     {
       $array['winner'] = $this->session->flashdata('winner');
     }
@@ -82,6 +82,7 @@ class Bids extends CI_Controller
       return false;
     }
 
+    $hb = $this->Bid->highest_bidder($item_number);
     $highest_bid = $this->Bid->current_max_bid($item_number);
     $bid_count = $this->Bid->item_bid_count($item_number);
     
@@ -109,9 +110,21 @@ class Bids extends CI_Controller
     }
 
     // determine if the new bid is the highest bid
-    if($bid_amount > $current_max_bid || (!$bid_count && $bid_amount >= $current_max_bid))
+    if($bid_amount > $current_max_bid || ($bid_count == 0 && $bid_amount >= $current_max_bid))
     {
-      $meal['current_price'] = $current_max_bid + 5;
+      if($bid_count > 0)
+      {
+        if($bid_amount >= $current_max_bid + 5)
+        {
+          $meal['current_price'] = $current_max_bid + 5;
+        } 
+        else 
+        {
+          $meal['current_price'] = $bid_amount;
+        }
+        $this->Meal->update_highest_bidder($user_id, $meal['id']);
+        $this->messages($hb['id'], 2, "Bad news, you've been outbid on " . $meal['meal'] . ". There is still time to increase your bid and win that delicious meal!" );
+      }
       $winner = true;
     }
     else 
@@ -120,7 +133,12 @@ class Bids extends CI_Controller
       $winner = false;
     }
 
-    $this->Meal->update_meal($meal);
+    if(!$this->Meal->update_current_price($meal['current_price'], $meal['id']))
+    {
+      $this->session->set_flashdata('header', "An error occurred");
+      $this->session->set_flashdata('bid_message', 'A database error occurred, please try again or contact an administrator');
+      redirect("after_bid");
+    }
     $this->session->set_flashdata('meal', $meal);
     $this->session->set_flashdata('header', "Bid Success");
     $this->session->set_flashdata('bid_message', 'Your bid was successful');
@@ -140,7 +158,7 @@ class Bids extends CI_Controller
     $dbtime = strtotime($this->Meal->meal_end_time($item_number));
     $curtime = time();
 
-    if($curtime - $dbtime <= 0 || $this->Meal->meal_ended_at($item_number) != NULL)
+    if($dbtime - $curtime <= 0 || $this->Meal->meal_ended_at($item_number) != NULL)
     {
       $this->session->set_flashdata('bid_message', 'This auction has already ended');
       return false;
@@ -216,15 +234,20 @@ class Bids extends CI_Controller
     $this->Meal->end_listing($list['id']);
 
     $bid_count = $this->Bid->item_bid_count($list['id']);
-    $this->load->model('Message');
 
     if(!$bid_count)
     {
-      $this->Message->send(array('to_user_id' => $list['user_id'], 'from_user_id' => 2, 'message' => "Your auction for " . $list['meal'] . " has ended without any bidders." ) );
+      $this->messages($list['user_id'], 2, "Your auction for " . $list['meal'] . " has ended without any bidders." );
     } else {
       $hb = $this->Bid->highest_bidder($list['id']);
-      $this->Message->send(array('to_user_id' => $hb['id'], 'from_user_id' => $list['user_id'], 'message' => "Congratulations, you are the highest bidder for " . $list['meal'] . "! Please proceed to checkout at your earliest convenience. Contact your host for further details."));
-      $this->Message->send(array('to_user_id'=> $list['user_id'], 'from_user_id' => $hb['id'], 'message' => "Your auction for " . $list['meal'] ." has ended and " . $hb['user_name'] ." is the highest bidder. They may contact you for further details."));
+      $this->messages($hb['id'], $list['user_id'], "Congratulations, you are the highest bidder for " . $list['meal'] . "! Please proceed to checkout at your earliest convenience. Contact your host for further details.");
+      $this->messages($list['user_id'], $hb['id'], "Your auction for " . $list['meal'] ." has ended and " . $hb['user_name'] ." is the highest bidder. They may contact you for further details.");
     }
+  }
+
+  public function messages($to, $from, $message)
+  {
+    $this->load->model('Message');
+    $this->Message->send(array("to_user_id" => $to, 'from_user_id' => $from, "message" => $message));
   }
 }
