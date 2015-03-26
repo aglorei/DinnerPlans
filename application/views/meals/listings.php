@@ -68,25 +68,109 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
 						foreach ($options as $option) 
 						{
+							// construct name of checkbox field
+							$checkbox = 'dietary_' . $option['id'];	
+?>	
+							<label>
+								<input name="dietary_<?=$option["id"]?>" type="checkbox" value="<?=$option["id"]?>"
+<?php 
+								// if checkbox exists in post, add checked property
+								if($this->input->post($checkbox))
+								{
+									echo "checked";
+								}
 ?>
-							<label><input name="dietary_<?=$option["id"]?>" type="checkbox" value="<?=$option["id"]?>"> <?=$option["option"]?></label>						
+								> <?=$option["option"]?>
+							</label>						
 <?php
 						}
 ?>
 						</div>	
 						<div class="control-group">
 							<p>Price:</p>						
-							<label><input name="price_1" type="checkbox" value="1"> $ ($0-50)</label>
-							<label><input name="price_2" type="checkbox" value="2"> $$ ($50-100) </label>
-							<label><input name="price_3" type="checkbox" value="3"> $$$ ($100-150)</label>
-							<label><input name="price_4" type="checkbox" value="4"> $$$$ ($150-200)</label>
+							<label>
+								<input name="price_1" type="checkbox" value="1"
+<?php 
+								if($this->input->post("price_1"))
+								{
+									echo "checked";
+								}
+?>
+								> $ ($0-50)
+							</label>
+							<label>
+								<input name="price_2" type="checkbox" value="2"
+<?php 
+								if($this->input->post("price_2"))
+								{
+									echo "checked";
+								}
+?>
+								> $$ ($50-100) 
+							</label>
+							<label>
+								<input name="price_3" type="checkbox" value="3"
+<?php 
+								if($this->input->post("price_3"))
+								{
+									echo "checked";
+								}
+?>
+								> $$$ ($100-150)
+							</label>
+							<label>
+								<input name="price_4" type="checkbox" value="4"
+<?php 
+								if($this->input->post("price_4"))
+								{
+									echo "checked";
+								}
+?>
+								> $$$$ ($150-200)
+							</label>
 						</div>
 						<div class="control-group">
 							<p>Ratings:</p>						
-							<label><input name="rating_1" type="checkbox" value="1"> 1 star +</label>						
-							<label><input name="rating_2" type="checkbox" value="2"> 2 star +</label>						
-							<label><input name="rating_3" type="checkbox" value="3"> 3 star +</label>						
-							<label><input name="rating_4" type="checkbox" value="4"> 4 star +</label>
+							<label>
+								<input name="rating_1" type="checkbox" value="1"
+								<?php 
+									if($this->input->post("rating_1"))
+									{
+										echo "checked";
+									}
+	?>
+								> 1 star +
+							</label>						
+							<label>
+								<input name="rating_2" type="checkbox" value="2"
+<?php 
+								if($this->input->post("rating_2"))
+								{
+									echo "checked";
+								}
+?>
+								> 2 star +
+							</label>						
+							<label>
+								<input name="rating_3" type="checkbox" value="3"
+<?php 
+								if($this->input->post("rating_3"))
+								{
+									echo "checked";
+								}
+?>
+								> 3 star +
+							</label>						
+							<label>
+								<input name="rating_4" type="checkbox" value="4"
+<?php 
+								if($this->input->post("rating_4"))
+								{
+									echo "checked";
+								}
+?>
+								> 4 star +
+							</label>
 						</div>							
 						<input type="submit" value="search" class="btn blue">
 					</fieldset>
@@ -95,19 +179,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 			<div class="col-xs-9">
+				<div class="row">
 <?php
+			if(!$meals)
+			{
+				echo "No meals currently match all of your preferences. Please try widening your search.";
+			}
+
 			foreach ($meals as $meal) 
 			{
+				// get image for current meal
+				$meal['img'] = $this->Meal->get_meal_img($meal['id'])['img_path'];
+
+				// get dietary options for current meal
+				$meal['options'] = $this->Meal->show_options_by_meal($meal['id']);
 ?>
-				<div class="row">
-					<div class="col-xs-4 listing-box">
-						<a href="/meals/listing/<?=$meal["id"]?>"><img src="/assets/img/meals-placeholder.jpg" class="img-rounded sm"></a>
+					<div class="col-xs-4">
+						<a href="/meals/listing/<?=$meal["id"]?>"><img src="<?=$meal["img"]?>" class="img-rounded sm"></a>
 						<h5><strong><?=$meal["meal"]?></strong></h5>
 
 						<p class="description"><?=$meal["description"]?></p>
-
+<?php 
+					// only display this text if options are available
+					if(count($meal['options']))
+					{
+?>
 						<p><em>(Options available: <?=$meal["options"]?>)</em></p>
-
+<?php
+											
+					}
+?>
 						<div class="row">
 							<div class="col-xs-6">
 								<p class="date">March 31, 2015</p>
@@ -115,14 +216,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="col-xs-6">
 								<p class="price text-right">$<?=number_format($meal["initial_price"],2,'.','')?></p>
 							</div>
-						</div>
-												
+						</div>												
 						<p class="rating text-center">4 stars</p>
 					</div>
-				</div>
 <?php
-			}
+				}
 ?>
+				</div><!-- end row -->
 			</div><!-- end listings -->
 		</div><!-- end row -->
 	</div><!-- end container -->

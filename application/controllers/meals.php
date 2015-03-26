@@ -24,15 +24,20 @@ class Meals extends CI_Controller
 			$meals = $this->Meal->show_meals_by_category($category);
 			// die("filtered by category");
 		}
+		else if ($this->session->flashdata('meals'))
+		{
+			$meals = $this->session->flashdata('meals');
+		}
 		else
 		{
 			$meals = $this->Meal->show_meals();
 			// die("no filter");
 		}
 
-		// var_dump($meals);
-
+		// find all (meal) categories 
 		$categories = $this->Meal->show_categories();
+
+		// return all (dietary) options
 		$options = $this->Meal->show_options();
 
 		$view_data = array(
@@ -47,7 +52,7 @@ class Meals extends CI_Controller
 	// show a single meal
 	public function show_listing($id)
 	{
-		// retrieve meal info
+		// retrieve mealinfo
 		$meal = $this->Meal->show_meal($id);
 
 		$bid_phrase = "Make your bid!";
@@ -56,7 +61,7 @@ class Meals extends CI_Controller
 		$meal['bid_count'] = $this->Bid->item_bid_count($meal['id']);
 		$meal['chef'] = $this->Meal->chef_name($meal['id']);
 		$meal['end_time'] = strtotime($this->Meal->meal_end_time($meal['id']));
-		$meal['img'] = $this->Meal->get_meal_img($meal['id']);
+		$meal['img'] = $this->Meal->get_meal_img($meal['id'])['img_path'];
 
 		if(!$meal['bid_count'])
 		{
@@ -68,17 +73,18 @@ class Meals extends CI_Controller
 			"bid_phrase" => $bid_phrase
 		);
 
-		// var_dump($view_data);
-		// die("current");
-
 		$this->load->view('meals/listing',$view_data);
 	}
 
 	public function filter_listing()
 	{
+		// concatenate values of checkboxes
 		$prefsArr = array();
 		$pricesArr = array();
 		$ratingsArr = array();
+
+		// store names of checkboxes that were submitted
+		// $checkboxArr = array();
 
 		$prefs = "";
 		$ratings = "";
@@ -91,23 +97,26 @@ class Meals extends CI_Controller
 			{
 				// push value to array
 				array_push($prefsArr,$value);
+				// save name of checkbox
+				// array_push($checkboxArr,$pref);
 			}
 			// extract name of preference
 			if(substr($pref,0,-2) == "price")
 			{
 				// push value to array
 				array_push($pricesArr,$value);
+				// save name of checkbox
+				// array_push($checkboxArr,$pref);
 			}
 			// extract name of preference
 			if(substr($pref,0,-2) == "rating")
 			{
 				// push value to array
 				array_push($pricesArr,$value);
+				// save name of checkbox
+				// array_push($checkboxArr,$pref);
 			}
 		}
-
-		// var_dump(count($pricesArr));
-		// var_dump($pricesArr[count($pricesArr) - 1]);
 
 		// order prices from low to high
 		sort($pricesArr);
@@ -164,15 +173,12 @@ class Meals extends CI_Controller
 			"highPrice" => $highPrice
 		);
 
-		// echo $lowPrice;
-		// echo $highPrice;
-		// var_dump($prefs);
-		// var_dump($prices);
-		// var_dump($ratings);
-		// die();
-
 		// pass prefs to query
 		$meals = $this->Meal->show_meals_by_preferences($prefs,$prices,$ratings);
-		return $meals;
+
+		$this->session->set_flashdata('meals',$meals);
+		$this->session->set_flashdata('checkboxes',$this->input->post());
+		
+		redirect("/meals/listings");
 	}
 }

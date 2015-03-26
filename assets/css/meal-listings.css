@@ -1,6 +1,6 @@
-/**{
-  outline: 1px dotted red;
-}*/
+*{
+  /*outline: 1px dotted red;*/
+}
 
 /* separate page content from header */
 div.content{
@@ -53,12 +53,12 @@ div.content{
 
         img.sm {
           width:250px;
-          height:175px;
+          height:auto;
         }
 
         img.lg {
           width:350px;
-          height:250px;
+          height:auto;
         }
 
       form.bid {
