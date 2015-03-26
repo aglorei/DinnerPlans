@@ -174,7 +174,6 @@ class Users extends CI_Controller
 		}
 
 		$this->load->view('/users/account', $view_data);
-		var_dump($view_data['bid_box']['bids']);
 	}
 
 	public function upload_picture($id)
