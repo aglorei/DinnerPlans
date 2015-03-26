@@ -44,47 +44,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 <?php	$this->load->view('partials/header'); ?>
-	<div id="myCarousel" class="carousel slide" data-ride="carousel">
-		<!-- Indicators -->
-		<ol class="carousel-indicators">
-			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			<li data-target="#myCarousel" data-slide-to="1"></li>
-		</ol>
+	<div class="container">
+		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<li data-target="#myCarousel" data-slide-to="1"></li>
+			</ol>
 
-		<!-- Wrapper for slides -->
-		<div class="carousel-inner" role="listbox">
-			<!-- Slide 1 -->
-			<div class="item active">
-				<img src="/assets/images/home1.jpg" alt="home1">
-				<div class="carousel-caption">
-					<h1>Bon Appétit!</h1>
-					<p class="lead">We're dedicated to bringing people together at the dinner table. Get started by browsing listings of events made by both restaurant professionals and cooking enthusiasts like yourself. Whether it's chef-driven menus or casual dinner parties with new friends, take a look at our hosts' listings and bid for a seat at their table.</p>
-					<p><a class="btn btn-lg btn-primary blue" href="/meals/listings">Take a look!</a></p>
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner" role="listbox">
+				<!-- Slide 1 -->
+				<div class="item active">
+					<img src="/assets/images/home1.jpg" alt="home1">
+					<div class="carousel-caption">
+						<h1>Bon Appétit!</h1>
+						<p class="lead">We're dedicated to bringing people together at the dinner table. Get started by browsing listings of events made by both restaurant professionals and cooking enthusiasts like yourself. Whether it's chef-driven menus or casual dinner parties with new friends, take a look at our hosts' listings and bid for a seat at their table.</p>
+						<p><a class="btn btn-lg btn-primary blue" href="/meals/listings">Take a look!</a></p>
+					</div>
+				</div>
+
+				<!-- Slide 2 -->
+				<div class="item">
+					<img src="/assets/images/home2.jpg" alt="home2">
+					<div class="carousel-caption">
+						<h1>We Would Love to Be Your Guests</h1>
+						<p class="lead">Do you think that you have what it takes to cook full course dinners and indulge guests with entertainment and mood setting? Apply to be one of our acclaimed hosts! You'll be able to meet interesting people, excercise your passion, and make some money to boot!</p>
+						<p><a class="btn btn-lg btn-primary blue" href="/messages/host_apply">Apply now!</a></p>
+					</div>
 				</div>
 			</div>
 
-			<!-- Slide 2 -->
-			<div class="item">
-				<img src="/assets/images/home2.jpg" alt="home2">
-				<div class="carousel-caption">
-					<h1>We Would Love to Be Your Guests</h1>
-					<p class="lead">Do you think that you have what it takes to cook full course dinners and indulge guests with entertainment and mood setting? Apply to be one of our acclaimed hosts! You'll be able to meet interesting people, excercise your passion, and make some money to boot!</p>
-					<p><a class="btn btn-lg btn-primary blue" href="/messages/host_apply">Apply now!</a></p>
-				</div>
-			</div>
+			<!-- Left and right controls -->
+			<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a>
+			<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
 		</div>
-
-		<!-- Left and right controls -->
-		<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
-		</a>
-		<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
 	</div>
-
 	<!-- Description containers -->
 	<div class="container">
 		<div class="row">
