@@ -33,7 +33,7 @@ class Bid extends CI_Model
   // get user items bid history (unique items only)
   public function user_bid_history($user_id)
   {
-    $query = "SELECT b.bid, m.meal, m.description, m.current_price, m.ended_at, DATEDIFF(DATE_ADD(m.created_at, INTERVAL m.duration DAY), NOW()) AS remaining_days FROM (SELECT * FROM bids WHERE user_id = ? ORDER BY bid DESC) AS b JOIN meals m ON b.meal_id = m.id GROUP BY b.meal_id;";
+    $query = "SELECT b.bid, m.id AS meal_id, m.meal, m.description, m.highest_bidder, CONCAT_WS(' ', u.first_name, u.last_name) AS highest_bidder_name, m.current_price, m.ended_at, DATEDIFF(DATE_ADD(m.created_at, INTERVAL m.duration DAY), NOW()) AS remaining_days FROM (SELECT * FROM bids WHERE user_id = ? ORDER BY bid DESC) AS b JOIN meals m ON b.meal_id = m.id JOIN users u ON m.highest_bidder = u.id GROUP BY b.meal_id;";
     return $this->db->query($query, array($user_id))->result_array();
   }
 

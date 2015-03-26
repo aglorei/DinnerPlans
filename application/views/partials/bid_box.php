@@ -1,5 +1,6 @@
 	<!-- Bidding box -->
 	<div class="col-xs-12 col-sm-6 col-md-8">
+	<h3>Bidding History</h3>
 <?php	foreach ($bids as $bid)
 		{ ?>
 			<div class="row">
@@ -35,8 +36,8 @@
 				</div>
 				<!-- Bid Status -->
 <?php			if (!$bid['ended_at'])
-				{ ?>
-<?php				if ($bid['bid'] >= $bid['current_price'])
+				{
+					if ($this->session->userdata('id') === $bid['highest_bidder'])
 					{ ?>
 						<div class="col-sm-12 col-md-6 text-right">
 							<label class="text-success">You are currently the highest bidder!</label>
@@ -45,14 +46,36 @@
 					else
 					{ ?>
 						<div class="col-sm-12 col-md-6 text-right">
-						<label class="text-danger">You've been outbid!</label>
-					</div>
+							<label class="text-danger">You've been outbid by <?= $bid['highest_bidder_name'] ?>!</label>
+						</div>
 <?php				} ?>
+					<div class="col-sm-12">
+						<form class="place-bid" action="/bids/place_bid" method="post">
+							<!-- Bid amount -->
+							<label for="bid-amount">Place new bid:</label>
+							<input type="text" name="bid-amount" >
+
+							<!-- meal_id as hidden input -->
+							<input type="hidden" name="meal-id" value="<?= $bid['meal_id'] ?>" />
+							<input class="btn blue" type="submit" value="Place bid" />
+						</form>
+					</div>
 <?php			}
 				else
-				{ ?>
-
-<?php			} ?>
+				{
+					if ($this->session->userdata('id') === $bid['highest_bidder'])
+					{ ?>
+						<div class="col-sm-12 col-md-6 text-right">
+							<label class="text-success">You won the meal!</label>
+						</div>
+<?php				}
+					else
+					{ ?>
+						<div class="col-sm-12 col-md-6 text-right">
+							<label class="text-danger">You lost to <?= $bid['highest_bidder_name'] ?>!</label>
+						</div>
+<?php				}
+			} ?>
 			</div>
 <?php	} ?>
 	</div>
