@@ -7,14 +7,18 @@ class Meals extends CI_Controller
 	    parent::__construct();
 	    // load model
 	    $this->load->model("Meal");
+
+	    // load helper
+		$this->load->helper('text');
 	}
 
 	// will load all meals, order by category if needed
 	public function index($category=0)
 	{
-		if(!empty($this->input->post()))
+
+		if(!empty($this->input->get()))
 		{
-			$meals = $this->filter_listing($this->input->post());
+			$meals = $this->filter_listing($this->input->get());
 			// die("filtered by prefs");
 		}
 
@@ -24,10 +28,7 @@ class Meals extends CI_Controller
 			$meals = $this->Meal->show_meals_by_category($category);
 			// die("filtered by category");
 		}
-		else if ($this->session->flashdata('meals'))
-		{
-			$meals = $this->session->flashdata('meals');
-		}
+
 		else
 		{
 			$meals = $this->Meal->show_meals();
@@ -88,38 +89,29 @@ class Meals extends CI_Controller
 		$pricesArr = array();
 		$ratingsArr = array();
 
-		// store names of checkboxes that were submitted
-		// $checkboxArr = array();
-
 		$prefs = "";
 		$ratings = "";
 
 		// loop through checkboxes submitted
-		foreach($this->input->post() as $pref => $value)
+		foreach($this->input->get() as $pref => $value)
 		{
 			// extract name of preference
 			if(substr($pref,0,-2) == "dietary")
 			{
 				// push value to array
 				array_push($prefsArr,$value);
-				// save name of checkbox
-				// array_push($checkboxArr,$pref);
 			}
 			// extract name of preference
 			if(substr($pref,0,-2) == "price")
 			{
 				// push value to array
 				array_push($pricesArr,$value);
-				// save name of checkbox
-				// array_push($checkboxArr,$pref);
 			}
 			// extract name of preference
 			if(substr($pref,0,-2) == "rating")
 			{
 				// push value to array
-				array_push($pricesArr,$value);
-				// save name of checkbox
-				// array_push($checkboxArr,$pref);
+				array_push($ratingsArr,$value);
 			}
 		}
 
@@ -181,10 +173,7 @@ class Meals extends CI_Controller
 		// pass prefs to query
 		$meals = $this->Meal->show_meals_by_preferences($prefs,$prices,$ratings);
 
-		$this->session->set_flashdata('meals',$meals);
-		$this->session->set_flashdata('checkboxes',$this->input->post());
-
-		redirect("/meals/listings");
+		return $meals;
 	}
 
 	public function create_listing($id)

@@ -134,7 +134,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div> <!-- end of image container -->
 			</div> <!-- end of image column -->
 			<div class="col-xs-12 col-lg-5">
-
 				<h2><?=$bid_phrase?></h2>
 
 					<fieldset>

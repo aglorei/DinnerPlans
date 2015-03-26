@@ -50,6 +50,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     .super-pad {
       padding-top: 50px;
     }
+    .img-container {
+      height: 400px;
+    }
   </style>
 </head>
 <body>
@@ -59,7 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="row">
       <div class="col-md-6 col-sm-12">
         <h2><?= $header ?></h2>
-        <a href="/meals/listing/<?= $meal['id'] ?>" class='img-rounded'><img src="<?= $meal['img'] ?>" alt="Meal Image" height: 200 width: 200></a>
+        <a href="/meals/listing/<?= $meal['id'] ?>" class='img-rounded'><img src="<?= $meal['img'] ?>" alt="Meal Image" class='img-container'></a>
       </div> <!-- end picture column -->
 
 
