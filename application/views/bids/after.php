@@ -75,7 +75,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
                 <p>Congratulations! You are the highest bidder for <?= $meal['meal'] ?>.<br>
 <?php
-                    if(time() - $meal['end_time'] > 0)
+                    if($meal['end_time'] - time() > 0)
                     {
 ?>
                       You can still be outbid. Click <a href="/meals/listing/<?= $meal['id'] ?>">here</a> to increase your bid amount.
@@ -83,15 +83,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     }
 ?>
                 </p>
+                <p>While you're here, why not check out more great meal deal <a href="/meals/listings">listings</a>?</p>
 <?php
               } else {
 ?>
                 <p>Your bid amount was not sufficient to take the lead!</p><br>
 <?php
-                if(time() - $meal['end_time'] > 0)
+                if($meal['end_time'] - time() > 0)
                 {
 ?>
                 <p>There's still time left! Increase your bid amount <a href="/meals/listing/<?= $meal['id'] ?>">now!</a></p>
+<?php
+                }
+                else {
+?>
+                  <p>Unfortunately this meal listing has just expired, but we have more great meals available
+                  in the <a href="/meals/listings">listings</a>.</p>
 <?php
                 }
               }

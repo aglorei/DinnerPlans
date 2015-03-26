@@ -70,7 +70,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="row">
 					<!-- Profile Box -->
 <?php				$this->load->view('partials/profile_box', $user_info); ?>
-					<!-- Bid Controls -->
+					<!-- Bidding Box -->
+<?php				$this->load->view('partials/bid_box', $bid_box); ?>
 				</div>
 				<!-- Order History -->
 			</div>

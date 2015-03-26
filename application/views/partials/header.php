@@ -147,9 +147,9 @@ var counter = 0;
 						},
 						'json'
 					);
+				return false;
 			}
 			var inte = setInterval(check_database(value), 1000);
-
 		});
 	</script>
 </div>

@@ -53,15 +53,15 @@
 							<p class="text-muted"><?= $meal['description'] ?></p>
 							<!-- Row 3 -->
 							<div class="row">
-<?php							if ($meal['ended_at'] == null)
+<?php							if (!$meal['ended_at'])
 								{ ?>
 									<!-- Current Price -->
 									<div class="col-xs-6 col-sm-3">
 										<p>Current Price: $<?= $meal['current_price'] ?></p>
 									</div>
-									<!-- Auction information -->
+									<!-- Bidding information -->
 									<div class="col-xs-6 col-sm-9 text-right text-success">
-										<p>Auction began <?= $meal['created_at'] ?>, ends in <?= $meal['remaining_days'] ?> days.</p>
+										<p>Bidding began <?= $meal['created_at'] ?>, ends in <?= $meal['remaining_days'] ?> day<?php if($meal['remaining_days']>1) {echo "s";} ?>.</p>
 									</div>
 <?php							}
 								else
@@ -70,9 +70,9 @@
 									<div class="col-xs-6 col-sm-3">
 										<p>Final Price: $<?= $meal['current_price'] ?></p>
 									</div>
-									<!-- Auction information -->
+									<!-- Bidding information -->
 									<div class="col-xs-6 col-sm-9 text-right text-danger">
-										<p>Auction began <?= $meal['created_at'] ?>, ended on <?= $meal['ended_at'] ?>.</p>
+										<p>Bidding began <?= $meal['created_at'] ?>, ended on <?= $meal['ended_at'] ?>.</p>
 									</div>
 <?php							} ?>
 							</div>

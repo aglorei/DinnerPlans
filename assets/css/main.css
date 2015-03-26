@@ -11,16 +11,6 @@ h2{
 		background-color: #606c88;
 		color: white;
 	}
-	.green{
-		border: 1px solid forestgreen;
-		background-color: forestgreen;
-		color: white;
-	}
-	.red{
-		border: 1px solid darkred;
-		background-color: darkred;
-		color: white;
-	}
 .navbar{
 	border-bottom: 1px solid #888888;
 }

@@ -227,7 +227,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<p class="date">March 31, 2015</p>
 							</div>
 							<div class="col-xs-6">
-								<p class="price text-right">$<?=number_format($meal["initial_price"],2,'.','')?></p>
+								<p class="price text-right">$<?=number_format($meal["current_price"],2,'.','')?></p>
 							</div>
 						</div>												
 						<p class="rating text-center">4 stars</p>
