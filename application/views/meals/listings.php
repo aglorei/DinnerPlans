@@ -58,16 +58,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="container">
 
 		<div class="row content">
-			<div class="col-xs-12 categories">
-<?php
-			foreach ($categories as $category) 
-			{
-?>
-				<a href="/meals/listings/<?=$category["id"]?>"><?=$category["category"]?></a>
-<?php
-			}
-?>
-			</div>
 			<div class="col-xs-2">
 				<form action="/meals/filter/" name="preferences" class="preferences" method="get">
 					<fieldset>
