@@ -127,19 +127,29 @@
 	</div>
 	<script>
 		$(document).ready(function() {
-
-			function check_database()
+			var value = 1000;
+var counter = 0;
+			function check_database(value)
 			{
+				console.log("the value is : " + value);
 				$.get(
 						"/db_check",
-						function(data) {
-							console.log(data);
+						function(data) 
+						{
+							console.log("the returned data is : " + data);
+							// convert to milliseconds
+							value = data * 1000;
+							if(counter > 10)
+		        		clearInterval(inte);
+
+		        	counter++;
+		        	return value;
 						},
 						'json'
 					);
-				return false;
 			}
-			check_database();
+			var inte = setInterval(check_database(value), 1000);
+
 		});
 	</script>
 </div>

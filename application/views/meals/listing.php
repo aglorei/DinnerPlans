@@ -67,6 +67,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		    var minutesLeft = Math.floor((hoursLeft) - (hours*3600));
 		    var minutes     = Math.floor(minutesLeft/60);
 		    var remainingSeconds = seconds % 60;
+
+		    if(minutes < 10) {
+		    	minutes = "0" + minutes;
+		    }
+		    if(hours < 10) {
+		    	hours = "0" + hours;
+		    }
+		    if(days < 10) {
+		    	day = "0" + days;
+		    }
 		    if (remainingSeconds < 10) {
 		        remainingSeconds = "0" + remainingSeconds; 
 		    }
@@ -80,7 +90,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		    }
 			}
 
-	  	var countdownTimer = setInterval(timer(), 1000);
+	  	var countdownTimer = setInterval(timer, 1000);
 	  });
 
 	  function disable_bidding()
