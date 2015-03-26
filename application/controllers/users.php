@@ -132,6 +132,11 @@ class Users extends CI_Controller
 		$this->load->model('user');
 		$view_data['user_info'] = $this->user->get_user_by_id($this->session->userdata('id'));
 
+		// load bid model and query for highest bids made by user
+		$this->load->model('bid');
+		$view_data['bid_box'] = array('bids' => $this->bid->user_bid_history($this->session->userdata('id')));
+
+
 		// if admin, give all users as well
 		if($this->session->userdata('level') == 'Admin')
 		{
@@ -169,6 +174,7 @@ class Users extends CI_Controller
 		}
 
 		$this->load->view('/users/account', $view_data);
+		var_dump($view_data['bid_box']['bids']);
 	}
 
 	public function upload_picture($id)

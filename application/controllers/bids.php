@@ -12,7 +12,7 @@ class Bids extends CI_Controller
   public function after_bid()
   {
     $meal = $this->session->flashdata('meal');
-    $meal['img'] = $this->Meal->get_meal_img($meal['id']);
+    $meal['img'] = $this->Meal->get_meal_img($meal['id'])['img_path'];
     $meal['end_time'] = strtotime($this->Meal->meal_end_time($meal['id']));
     $header = $this->session->flashdata('header');
     $bid_message = $this->session->flashdata('bid_message');
@@ -140,7 +140,7 @@ class Bids extends CI_Controller
     $dbtime = strtotime($this->Meal->meal_end_time($item_number));
     $curtime = time();
 
-    if($curtime - $dbtime <= 0 || $this->Meal->meal_ended_at($item_number) != NULL)
+    if($dbtime - $curtime <= 0 || $this->Meal->meal_ended_at($item_number) != NULL)
     {
       $this->session->set_flashdata('bid_message', 'This auction has already ended');
       return false;

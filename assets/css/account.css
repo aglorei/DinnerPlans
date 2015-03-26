@@ -1,7 +1,4 @@
-li a{
-	color: #606c88;
-}
-h4{
+li a, h4{
 	color: #606c88;
 }
 .profile-box{
@@ -39,4 +36,7 @@ h4{
 		}
 .mail-box, .listing-box{
 	padding: 10px;
+}
+.bid-box{
+	border-bottom: 1px solid gray;
 }
