@@ -150,8 +150,8 @@ class Users extends CI_Controller
 			'sent' => $this->message->sent($this->session->userdata('id'))
 		);
 
-		// if host, load meal model and query for listing info
-		if ($this->session->userdata('level') == 'Host')
+		// if not user, load meal model and query for listing info
+		if ($this->session->userdata('level') != 'User')
 		{
 			$this->load->model('meal');
 			$view_data['meals'] = $this->meal->show_meals_by_user($this->session->userdata('id'));

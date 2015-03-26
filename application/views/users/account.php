@@ -54,7 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="container">
 		<!-- Tab Selectors -->
 		<ul id="myTabs" class="nav nav-tabs" role="tablist">
-			<li id="dashboard-tab" role="presentation"><a href="#dashboard" data-toggle="tab">Dashboard <span class="badge">12</span></a></li>
+			<li id="dashboard-tab" role="presentation"><a href="#dashboard" data-toggle="tab">Dashboard <span class="badge"><?= count($bid_box['bids']) ?></span></a></li>
 			<li id="billing-tab" role="presentation"><a href="#billing" data-toggle="tab">Billing</a></li>
 			<li id="messages-tab" role="presentation"><a href="#messages" data-toggle="tab">Messages <span class="badge"><?= count($messages['inbox']) ?></span></a></li>
 			<li id="myListings-tab" role="presentation"><a href="#myListings" data-toggle="tab">My Listings</a></li>

@@ -1,14 +1,14 @@
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container-fluid">
 		<div class="row header">
-			<div class="col-xs-6 col-md-2">
+			<div class="col-xs-6 col-md-4">
 				<a href="/"><h2>DinnerPlans</h2></a>
 			</div>
 				<!-- if logged in, else register -->
 <?php			if ($this->session->userdata('level'))
 				{ ?>
 					<!-- Regular login viewable on >=.md viewports -->
-					<div class="hidden-xs hidden-sm col-md-10">
+					<div class="hidden-xs hidden-sm col-md-8">
 						<form class="navbar-form navbar-right" action="/users/logout" method="post">
 							<a class="btn" href="/account" role="button">My Account</a>
 							<label>Welcome <?= $this->session->userdata('first_name') ?>!</label>
@@ -32,7 +32,7 @@
 				else
 				{ ?>
 					<!-- Regular login viewable on >=.md viewports -->
-					<div class="hidden-xs hidden-sm col-md-10">
+					<div class="hidden-xs hidden-sm col-md-8">
 						<form class="navbar-form navbar-right" action="/users/login" method="post">
 							<a class="btn" href="#" role="button" data-toggle="modal" data-target="#myModal">Don't have an account? Register!</a>
 
@@ -64,6 +64,27 @@
 <?php			} ?>
 		</div>
 	</div>
+</nav>
+
+<nav class="navbar navbar-default">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/meals/listings">Categories</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/meals/listings/2">American</a></li>
+			<li><a href="/meals/listings/7">Comfort Food</a></li>
+			<li><a href="/meals/listings/3">French</a></li>
+			<li><a href="/meals/listings/5">Indian</a></li>
+			<li><a href="/meals/listings/8">Italian</a></li>
+			<li><a href="/meals/listings/1">North African</a></li>
+			<li><a href="/meals/listings/4">Tapas</a></li>
+          </ul>
+        </li>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
 </nav>
 
 <!-- Modal -->

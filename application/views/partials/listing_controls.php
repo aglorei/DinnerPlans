@@ -1,7 +1,7 @@
 <div class="tab-pane fade in active" id="dashboard">
 	<div class="row">
 		<!-- If user is not a host, apply -->
-<?php	if ($this->session->userdata('level') != 'Host')
+<?php	if ($this->session->userdata('level') == 'User')
 		{ ?>
 		<div class="hidden-xs col-sm-3"></div>
 

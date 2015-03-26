@@ -6,7 +6,7 @@
 			<div class="row">
 				<!-- Meal Title -->
 				<div class="col-sm-12 col-md-8">
-					<h4><?= $bid['meal'] ?></h4>
+					<a href="meals/listing/<?= $bid['meal_id'] ?>"><h4><?= $bid['meal'] ?></h4></a>
 				</div>
 				<!-- Remaining Time -->
 <?php			if (!$bid['ended_at'])
