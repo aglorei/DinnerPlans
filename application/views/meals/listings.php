@@ -172,7 +172,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</label>
 						</div>	
 						<label>
-							<a href="http://localhost/meals/listings/" id="uncheckAll">Remove all preferences</a>
+							<a href="/meals/listings/" id="uncheckAll">Remove all preferences</a>
 						</label>						
 						<input type="submit" value="search" class="btn blue">
 					</fieldset>
