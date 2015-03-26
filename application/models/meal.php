@@ -195,7 +195,7 @@ class Meal extends CI_Model
 		// for each option, insert into database
 		foreach ($meal['options'] as $option)
 		{
-			$this->db->query('INSERT INTO meal_has_options (meal_id, option_id) VALUES (?, >);', array($meal_id, $option));
+			$this->db->query('INSERT INTO meal_has_options (meal_id, option_id) VALUES (?, ?);', array($meal_id, $option));
 		}
 	}
 
