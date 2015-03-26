@@ -175,4 +175,38 @@ class Bids extends CI_Controller
     }
     return true;
   }
+
+  // checks database for expired listings, closes expired, sends messages accordingly, returns time in seconds when it should be rerun
+  public function check_database()
+  {
+    try {
+      $msec = 300;
+      $listings = $this->Meal->active_meals();
+
+      if(!count($listings))
+      {
+        throw new Exception("No active listings in the database", 1);
+      }
+
+      foreach($listings as $index => $list)
+      {
+        $dbtime = strtotime($list['end_date']);
+        $curtime = time();
+
+        if($curtime - $dbtime <= 0)
+        {
+          $this->close_listing($list);
+        }
+      }
+
+
+    } catch (Exception $e) {
+      echo json_encode($msec);
+    }
+  }
+
+  public function close_listing($list)
+  {
+    
+  }
 }

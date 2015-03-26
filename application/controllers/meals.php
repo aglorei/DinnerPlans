@@ -59,18 +59,23 @@ class Meals extends CI_Controller
 
 		$this->load->model('Bid');
 		$meal['bid_count'] = $this->Bid->item_bid_count($meal['id']);
-		$meal['chef'] = $this->Meal->chef_name($meal['id']);
 		$meal['end_time'] = strtotime($this->Meal->meal_end_time($meal['id']));
 		$meal['img'] = $this->Meal->get_meal_img($meal['id'])['img_path'];
 
 		if(!$meal['bid_count'])
 		{
 			$bid_phrase = "Be the first to bid!";
+			$highest_bidder = NULL;
+		}
+		else 
+		{
+			$highest_bidder = $this->Bid->highest_bidder($meal['id']);
 		}
 
 		$view_data = array(
 			"meal" => $meal,
-			"bid_phrase" => $bid_phrase
+			"bid_phrase" => $bid_phrase,
+			"highest_bidder" => $highest_bidder
 		);
 
 		$this->load->view('meals/listing',$view_data);

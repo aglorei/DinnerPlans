@@ -65,6 +65,7 @@ $route['meals/filter'] = 'meals/index';
 // bid routes
 $route['after_bid'] = 'bids/after_bid';
 $route['bid'] = 'bids/place_bid';
+$route['db_check'] = 'bids/check_database';
 
 
 $route['404_override'] = '';

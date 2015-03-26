@@ -23,9 +23,25 @@ class Bid extends CI_Model
     return $this->db->query($query,  $array );
   }
 
+  // get user bid history for a specific meal
   public function user_meal_bid_history($user, $meal)
   {
     $query = "SELECT * FROM bids WHERE user_id = ? AND meal_id = ? ORDER BY bid DESC";
     return $this->db->query($query, array($user, $meal))->result_array();
+  }
+
+  // get user items bid history (unique items only)
+  public function user_bid_history($user_id)
+  {
+    $query = "SELECT * FROM (SELECT * FROM bids WHERE user_id = ? ORDER BY bid DESC) AS b GROUP BY meal_id";
+    return $this->db->query($query, array($user_id))->result_array();
+  }
+
+  // get the current highest bidder for a specific meal
+  public function highest_bidder($id)
+  {
+    $max = $this->current_max_bid($id);
+    $query = "SELECT users.*, CONCAT_WS(' ', users.first_name, users.last_name) AS user_name FROM users JOIN bids ON bids.user_id = users.id WHERE bids.id = ?";
+    return $this->db->query($query, array('id' =>$max['id']))->row_array();
   }
 }

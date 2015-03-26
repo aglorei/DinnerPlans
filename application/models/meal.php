@@ -160,6 +160,7 @@ class Meal extends CI_Model
 	{
 		$query = "SELECT file_path AS img_path FROM images WHERE id = 1";
 		return $this->db->query($query)->row_array();
+
 	}
 
 	// return all meals for a single user_id
@@ -168,5 +169,10 @@ class Meal extends CI_Model
 		return $this->db->query("SELECT m.id, m.meal, m.description, m.initial_price, c.category, DATE_FORMAT(m.created_at,'%M %e, %Y at %h:%i %p') AS created_at, m.current_price, DATE_FORMAT(m.ended_at,'%M %e, %Y at %h:%i %p') AS ended_at, DATE_FORMAT(m.meal_date,'%M %e, %Y') AS meal_date, DATEDIFF(DATE_ADD(m.created_at, INTERVAL m.duration DAY), NOW()) AS remaining_days FROM meals m JOIN categories c ON m.category_id = c.id WHERE m.user_id = ? ORDER BY m.id DESC;", array($id))->result_array();
 	}
 
+	// retrieve all active meal listings
+	public function active_meals()
+	{
+		return $this->db->query("SELECT *, DATE_ADD(created_at, INTERVAL duration DAY) AS end_date FROM meals WHERE ended_at IS NULL ORDER BY end_date;")->result_array();
+	}
 }
 

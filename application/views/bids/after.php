@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               if($winner)
               {
 ?>
-                <p>Congratulations! You are the highest bidder for <?= $meal['meal'] ?>.
+                <p>Congratulations! You are the highest bidder for <?= $meal['meal'] ?>.<br>
 <?php
                     if(time() - $meal['end_time'] > 0)
                     {
@@ -86,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
               } else {
 ?>
-                <p>Your bid amount was not sufficient to take the lead!</p>
+                <p>Your bid amount was not sufficient to take the lead!</p><br>
 <?php
                 if(time() - $meal['end_time'] > 0)
                 {
@@ -99,6 +99,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
            ?>
       </div> <!-- end of column -->
     </div> <!-- end of messages row -->
-  </div> <!-- end of container ->
+  </div> <!-- end of container -->
 </body>
 </html>

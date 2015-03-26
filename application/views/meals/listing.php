@@ -7,6 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		$current_bid = number_format($meal["current_price"] + 5,2,'.','');
 	}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -54,34 +55,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		var lgn = <?php echo json_encode($this->session->userdata('level') ? true : false); ?>;
 		var end_time = <?php echo json_encode($meal['end_time']); ?>;
-	  var doc = $('endtime');
+
 
 	  $(document).ready(function() {
+	  	function timer() {
+		  	var now = Math.floor(Date.now() / 1000);
+		  	var seconds = end_time - now;
+		    var days        = Math.floor(seconds/24/60/60);
+		    var hoursLeft   = Math.floor((seconds) - (days*86400));
+		    var hours       = Math.floor(hoursLeft/3600);
+		    var minutesLeft = Math.floor((hoursLeft) - (hours*3600));
+		    var minutes     = Math.floor(minutesLeft/60);
+		    var remainingSeconds = seconds % 60;
+		    if (remainingSeconds < 10) {
+		        remainingSeconds = "0" + remainingSeconds; 
+		    }
+		    $('#endtime').html(days + ":" + hours +":" + minutes +":" + remainingSeconds);
+		    if (seconds <= 0) {
+		    		$('#endtime').html("COMPLETED");
+		        clearInterval(countdownTimer);
+		        disable_bidding();
+		    } else {
+		        seconds--;
+		    }
+			}
 
-	  	countdown();
+	  	var countdownTimer = setInterval(timer(), 1000);
 	  });
 
-	  function countdown()
+	  function disable_bidding()
 	  {
-	  	var diff = Date.now() - end_time;
-	  	var ns = (((3e5-diff) / 1000)>>0);
-			var m = (ns/60)>> 0;
-			var s = ns - m *60;
-			doc.val("Auction Ends: " + m + ":" + ((""+s).length > 1 ? "" : "0") + s + " minutes");
+	  	var form = $('#bid-form').children();
 
-			if(diff > (3e5))
-			{
-				disable_bid_form();
-			}else {
-				//setTimeout(countdown(), 1000);
-			}
-			console.log(diff);
-	  }
-
-	  function disable_bid_form()
-	  {
-	  	var form = document.getElementById('bid-form');
-	  	form,disabled = true;
+	  	form.children('input[type="submit"]').prop('disabled', true);
+	  	form.children('input[type="text"]').prop('disabled', true);
+	  	form.children('input[type="text"]').attr('placeholder', "Bidding complete");
 	  }
 
 	  $(document).on('submit', '#bid-form', function() {
@@ -93,6 +101,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  	}
 	  });
 	</script>
+
+	<style>
+			td + td {
+				border-left: 1px solid gray;
+			}
+			tbody:last-child {
+				border: 0;
+			}
+	</style>
 </head>
 <body>
 <?php	$this->load->view('./partials/header');?>
@@ -106,20 +123,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<h2><?=$bid_phrase?></h2>
 
-				<form action="/bid" name="bid" method="post" class="form-inline" id='bid-form'>
 					<fieldset>
-						<legend>Meal Chef: <a href"#" alt="Chef Profile"><?= $meal['chef']?></a></legend>
-						<legend>Meal Date: <?= $meal['meal_date'] ?></legend>
-						<legend>Current Price: $<?= number_format($meal["current_price"],2,'.','') ?></legend>
-						<legend>Current Bid: $<?= $current_bid ?></legend>
-						<legend id="endtime"></legend>
-						<div class="form-group">
-							<input type="submit" value="Submit a new bid" class="btn blue">
-							<input type="text" name="bid-amount" placeholder="enter your bid" required>
-							<input type="hidden" name="meal-id" value="<?= $meal['id']?>">
-						</div>
+						<table class="table">
+							<tbody>
+								<tr>
+									<td>Meal Chef</td>
+									<td><a href"#" alt="Chef Profile"><?= $meal['host']?></a></td>
+								</tr>
+								<tr>
+									<td>Meal Date</td>
+									<td><?= $meal['meal_date'] ?></td>
+								</tr>
+								<tr>
+									<td>Current Price</td>
+									<td>$<?= number_format($meal["current_price"],2,'.','') ?></td>
+								</tr>
+<?php
+									if($meal['bid_count'])
+									{
+?>
+									<tr>
+										<td>Highest Bidder</td>
+										<td><a href="#"><?= $highest_bidder['user_name'] ?></a></td>
+									</tr>
+<?php
+									}
+?>
+								<tr>
+									<td>Current Bid</td>
+									<td>$<?= $current_bid ?></td>
+								</tr>
+								<tr>
+									<td>Auction End</td>
+									<td id="endtime"></td>
+								</tr>
+								<tr>
+									<form action="/bid" name="bid" method="post" class="form-inline" id='bid-form'>
+										<div class="form-group">
+											<td><input type="submit" value="Submit a new bid" class="btn blue"></td>
+											<td>
+												<input type="text" name="bid-amount" placeholder="enter your bid" required>
+												<input type="hidden" name="meal-id" value="<?= $meal['id']?>">
+											</td>
+										</div>
+									</form>
+								</tr>
+							</tbody>
+						</table>
 					</fieldset>
-				</form>
 			</div>
 			<div class="bid col-xs-5">
 				<h3>About Your Host: <?=$meal["host"]?></h3>
