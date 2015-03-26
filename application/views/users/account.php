@@ -40,8 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// after user applies to host
 	$(document).on('submit', 'form#host_apply', function(){
-		$('form#host_apply').html('<h4>Thanks for applying! Keep an eye on your inbox...</h4>');
-		return false;
+		alert('Thanks for applying! Keep an eye on your inbox...');
 	});
 
 	</script>

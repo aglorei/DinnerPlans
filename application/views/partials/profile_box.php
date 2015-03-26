@@ -7,7 +7,7 @@
 		{
 			echo $errors['upload'];
 		} ?>
-		<form class="upload-picture" action="/users/upload_picture" enctype="multipart/form-data" method="post">
+		<form class="upload-picture" action="/users/upload_picture/<?= $id ?>" enctype="multipart/form-data" method="post">
 			<div class="file-upload btn blue">
 				<span>Browse</span><input type="file" name="userfile" size="10" />
 			</div>

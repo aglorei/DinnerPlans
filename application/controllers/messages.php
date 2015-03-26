@@ -69,7 +69,7 @@ class Messages extends CI_Controller
 		$this->load->model('message');
 		$this->message->send($mail);
 
-		redirect('/account');
+		redirect('account');
 	}
 
 }
