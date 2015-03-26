@@ -10,7 +10,7 @@
 			} ?>
 			<input class="form-control" type="text" name="meal" />
 			<!-- Description -->
-			<label class="text" for="meal">Meal description:</label>
+			<label class="text" for="description">Meal description:</label>
 <?php		if (isset($errors['description']))
 			{
 				echo $errors['description'];

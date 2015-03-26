@@ -178,7 +178,52 @@ class Meals extends CI_Controller
 
 		$this->session->set_flashdata('meals',$meals);
 		$this->session->set_flashdata('checkboxes',$this->input->post());
-		
+
 		redirect("/meals/listings");
+	}
+
+	public function create_listing($id)
+	{
+		// set validation rules
+		$this->form_validation->set_rules('meal', 'meal title', 'trim|required|alpha_dash|min_length[2]');
+		$this->form_validation->set_rules('description', 'meal description', 'required|max_length[350]');
+		$this->form_validation->set_rules('email', 'email', 'required|valid_email|is_unique[users.email]');
+		$this->form_validation->set_rules('password', 'password', 'trim|required|min_length[5]|max_length[12]');
+		$this->form_validation->set_rules('password_confirm', 'password confirmation', 'trim|required|matches[password]');
+		$config['upload_path'] = './uploads';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size'] = 500;
+		$config['max_width'] = 2400;
+		$config['max_height'] = 2400;
+
+		// load upload library with above config rules
+		$this->load->library('upload', $config);
+
+		// if upload fails to validate, redirect back
+		if (!$this->upload->do_upload())
+		{
+			$errors['upload'] = $this->upload->display_errors();
+
+			$this->session->set_flashdata('errors', $errors);
+
+			redirect('/account');
+		}
+		// else, upload and update database with filepath
+		else
+		{
+			$data = $this->upload->data();
+
+			// var_dump($data);
+
+			$upload = array(
+				'id' => $id,
+				'file_name' => $this->upload->data('file_name')
+			);
+
+			$this->load->model('user');
+			$this->user->upload_picture($upload);
+
+			redirect('/account');
+		}
 	}
 }
