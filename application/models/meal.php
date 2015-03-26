@@ -46,14 +46,13 @@ class Meal extends CI_Model
 	{
 		$valueArr = array();
 
-		$query = "SELECT m.* , GROUP_CONCAT(' ',o.option) AS options FROM meals m";
-		$query .= " INNER JOIN meal_has_options mho on m.id = mho.meal_id INNER JOIN options o on mho.option_id = o.id";
+		$query = "SELECT m.* FROM meals m  LEFT JOIN meal_has_options mho on m.id = mho.meal_id";
 		// $query .= " INNER JOIN users u on m.user_id = u.id ";
-		$query .= " WHERE (0 = 0)";
+		$query .= " WHERE (0 = 0) AND (ended_at IS NULL) ";
 
 		if(strlen($prefs) > 0)
 		{
-			$query .= " AND mho.id IN (?)";
+			$query .= " AND mho.option_id IN (?)";
 			array_push($valueArr,$prefs);
 		}
 
@@ -63,7 +62,7 @@ class Meal extends CI_Model
 			array_push($valueArr,$prices["lowPrice"],$prices["highPrice"]);
 		}
 
-		// hold on to this
+		// for future ratings - hold on to this
 		// if(strlen($ratings) > 0)
 		// {
 		// 	$query .= "AND u.rating >= ?";
@@ -74,11 +73,13 @@ class Meal extends CI_Model
 
 		$values = $valueArr;
 
+		$result = $this->db->query($query,$values)->result_array();
+
 		// var_dump($query);
 		// var_dump($values);
+		// var_dump($result);
 		// die("query in model");
 
-		$result = $this->db->query($query,$values)->result_array();
 		return $result;
 	}
 

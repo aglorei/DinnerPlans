@@ -54,18 +54,17 @@ div.content{
         img.sm {
           width:250px;
           height:auto;
+          max-height: 175px;
         }
-
-        img.lg {
-          width:350px;
-          height:auto;
-        }
-
-      form.bid {
-        border:1px solid #ccc;
-        border-radius: 5px 5px 5px 5px;
-      }
 
       p.meal-description {
         margin-top:20px;
+      }
+
+      div.meal-box {
+        border: 1px solid #ccc;
+        border-radius: 5px 5px 5px 5px;
+        margin:0px 10px 10px 10px;
+        width:280px;
+        min-height:400px;
       }

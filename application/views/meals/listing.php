@@ -127,7 +127,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="container">
 		<div class="row content">
 			<div class="col-xs-7">
-				<img src="<?= $meal['img'] ?>" class="img-rounded">
+				<img src="<?= $meal['img'] ?>" class="img-rounded lg">
 			</div>
 			<div class="col-xs-5">
 
