@@ -33,6 +33,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             e.stopPropagation();
         });
 
+		// uncheck all checkboxes to remove filter preferences
+        $('#uncheckAll').on('click',function(){
+
+			$('.chkbox').each(function(){
+				this.checked = false;
+			});
+
+		});
+
 	});
 
 	</script>
@@ -59,8 +68,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 ?>
 			</div>
-			<div class="col-xs-3">
-				<form action="/meals/filter/" name="preferences" class="preferences" method="post">
+			<div class="col-xs-2">
+				<form action="/meals/filter/" name="preferences" class="preferences" method="get">
 					<fieldset>
 						<legend>Refine Your Listings</legend>
 						<div class="control-group">
@@ -72,10 +81,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							$checkbox = 'dietary_' . $option['id'];	
 ?>	
 							<label>
-								<input name="dietary_<?=$option["id"]?>" type="checkbox" value="<?=$option["id"]?>"
+								<input name="dietary_<?=$option["id"]?>" type="checkbox" class="chkbox" value="<?=$option["id"]?>"
 <?php 
 								// if checkbox exists in post, add checked property
-								if($this->input->post($checkbox))
+								if($this->input->get($checkbox))
 								{
 									echo "checked";
 								}
@@ -89,9 +98,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="control-group">
 							<p>Price:</p>						
 							<label>
-								<input name="price_1" type="checkbox" value="1"
+								<input name="price_1" type="checkbox" class="chkbox" value="1"
 <?php 
-								if($this->input->post("price_1"))
+								if($this->input->get("price_1"))
 								{
 									echo "checked";
 								}
@@ -99,9 +108,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								> $ ($0-50)
 							</label>
 							<label>
-								<input name="price_2" type="checkbox" value="2"
+								<input name="price_2" type="checkbox" class="chkbox" value="2"
 <?php 
-								if($this->input->post("price_2"))
+								if($this->input->get("price_2"))
 								{
 									echo "checked";
 								}
@@ -109,9 +118,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								> $$ ($50-100) 
 							</label>
 							<label>
-								<input name="price_3" type="checkbox" value="3"
+								<input name="price_3" type="checkbox" class="chkbox" value="3"
 <?php 
-								if($this->input->post("price_3"))
+								if($this->input->get("price_3"))
 								{
 									echo "checked";
 								}
@@ -119,9 +128,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								> $$$ ($100-150)
 							</label>
 							<label>
-								<input name="price_4" type="checkbox" value="4"
+								<input name="price_4" type="checkbox" class="chkbox" value="4"
 <?php 
-								if($this->input->post("price_4"))
+								if($this->input->get("price_4"))
 								{
 									echo "checked";
 								}
@@ -132,9 +141,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="control-group">
 							<p>Ratings:</p>						
 							<label>
-								<input name="rating_1" type="checkbox" value="1"
+								<input name="rating_1" type="checkbox" class="chkbox" value="1"
 								<?php 
-									if($this->input->post("rating_1"))
+									if($this->input->get("rating_1"))
 									{
 										echo "checked";
 									}
@@ -142,9 +151,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								> 1 star +
 							</label>						
 							<label>
-								<input name="rating_2" type="checkbox" value="2"
+								<input name="rating_2" type="checkbox" class="chkbox" value="2"
 <?php 
-								if($this->input->post("rating_2"))
+								if($this->input->get("rating_2"))
 								{
 									echo "checked";
 								}
@@ -152,9 +161,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								> 2 star +
 							</label>						
 							<label>
-								<input name="rating_3" type="checkbox" value="3"
+								<input name="rating_3" type="checkbox" class="chkbox" value="3"
 <?php 
-								if($this->input->post("rating_3"))
+								if($this->input->get("rating_3"))
 								{
 									echo "checked";
 								}
@@ -162,23 +171,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								> 3 star +
 							</label>						
 							<label>
-								<input name="rating_4" type="checkbox" value="4"
+								<input name="rating_4" type="checkbox" class="chkbox" value="4"
 <?php 
-								if($this->input->post("rating_4"))
+								if($this->input->get("rating_4"))
 								{
 									echo "checked";
 								}
 ?>
 								> 4 star +
 							</label>
-						</div>							
+						</div>	
+						<label>
+							<a href="http://localhost/meals/listings/" id="uncheckAll">Remove all preferences</a>
+						</label>						
 						<input type="submit" value="search" class="btn blue">
 					</fieldset>
 				</form>
 			</div><!-- end search form -->
 
 
-			<div class="col-xs-9">
+			<div class="col-xs-10">
 				<div class="row">
 <?php
 			if(!$meals)
@@ -193,8 +205,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				// get dietary options for current meal
 				$meal['options'] = $this->Meal->show_options_by_meal($meal['id']);
+
+				$meal["description"] = character_limiter($meal["description"],115,'&#8230;');
 ?>
-					<div class="col-xs-4">
+					<div class="col-xs-4 meal-box">
 						<a href="/meals/listing/<?=$meal["id"]?>"><img src="<?=$meal["img"]?>" class="img-rounded sm"></a>
 						<h5><strong><?=$meal["meal"]?></strong></h5>
 
@@ -205,8 +219,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					{
 ?>
 						<p><em>(Options available: <?=$meal["options"]?>)</em></p>
-<?php
-											
+<?php											
 					}
 ?>
 						<div class="row">
@@ -214,7 +227,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<p class="date">March 31, 2015</p>
 							</div>
 							<div class="col-xs-6">
-								<p class="price text-right">$<?=number_format($meal["initial_price"],2,'.','')?></p>
+								<p class="price text-right">$<?=number_format($meal["current_price"],2,'.','')?></p>
 							</div>
 						</div>												
 						<p class="rating text-center">4 stars</p>

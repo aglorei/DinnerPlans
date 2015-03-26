@@ -59,7 +59,7 @@ $route['meals/view_listing/(:num)'] = 'meals/show/$1';
 $route['meals/listings/(:num)'] = 'meals/index/$1';
 $route['meals/listings'] = 'meals/index/';
 $route['meals/listing/(:num)'] = 'meals/show_listing/$1';
-$route['meals/filter'] = 'meals/index';
+$route['meals/filter'] = 'meals/index/';
 
 
 // bid routes
