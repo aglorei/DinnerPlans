@@ -58,8 +58,8 @@
 			<div class="profile-box col-sm-12 col-md-4">
 				<!-- Registration Date -->
 				<label class="text-muted"><?= $user['level'] ?>, registered <?= $user['days'] ?> days ago</label>
-				<!-- Update Profile Form -->
-				<form class="update-password" action="/users/password/<?= $user['id'] ?>" method="post">
+				<!-- Update Password Form -->
+				<form class="update-password" action="/users/update_password/<?= $user['id'] ?>" method="post">
 					<!-- Password -->
 					<label class="text-muted" for="password">Password:</label>
 <?php				if (isset($errors['password']))
@@ -78,9 +78,13 @@
 					<!-- Submit Form -->
 					<input class="form-control btn btn-block blue" type="submit" value="Update Password" />
 				</form>
-				<!-- Update Profile Form -->
-				<form class="update-privilege" action="/users/level/<?= $user['id'] ?>" method="post">
+				<!-- Update Privilege Form -->
+				<form class="update-privilege" action="/users/update_privilege/<?= $user['id'] ?>" method="post">
 					<label class="text-muted" for="level">Level:</label>
+<?php				if (isset($errors['level']))
+					{
+						echo $errors['level'];
+					} ?>
 					<select id="level<?= $user['id'] ?>" class="form-control" name="level">
 						<option value="4">User</option>
 						<option value="5">Host</option>

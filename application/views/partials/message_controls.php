@@ -1,8 +1,9 @@
 <div class="tab-pane fade in active" id="dashboard">
 	<div class="row">
 		<div class="col-xs-12 col-sm-3">
+			<!-- Tab Selectors -->
 			<ul class="nav nav-stacked nav-tabs" role="tablist">
-				<li id="inbox-tab" role="presentation" class="active"><a href="#inbox" data-toggle="tab">Inbox</a></li>
+				<li id="inbox-tab" role="presentation"><a href="#inbox" data-toggle="tab">Inbox</a></li>
 				<li id="sent-tab" role="presentation"><a href="#sent" data-toggle="tab">Sent</a></li>
 				<li id="compose-tab" role="presentation"><a href="#compose" data-toggle="tab">Compose</a></li>
 			</ul>
@@ -11,7 +12,7 @@
 			<!-- Tab Contents -->
 			<div class="tab-content">
 				<!-- Inbox -->
-				<div class="tab-pane fade in active" id="inbox">
+				<div class="tab-pane fade in" id="inbox">
 <?php				foreach ($inbox as $mail)
 					{ ?>
 						<div class="mail-box">

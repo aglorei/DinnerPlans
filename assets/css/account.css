@@ -1,6 +1,9 @@
 li a{
 	color: #606c88;
 }
+h4{
+	color: #606c88;
+}
 .profile-box{
 	outline: 1px solid #888888;
 }
@@ -34,9 +37,6 @@ li a{
 		.update-privilege{
 			padding-top: 5px;
 		}
-.mail-box{
+.mail-box, .listing-box{
 	padding: 10px;
 }
-	.mail-box h4{
-		color: #606c88;
-	}

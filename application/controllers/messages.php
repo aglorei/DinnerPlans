@@ -49,4 +49,27 @@ class Messages extends CI_Controller
 		redirect('/account');
 	}
 
+	public function host_apply($id)
+	{
+		// load user model and get first admin
+		$this->load->model('user');
+		$admin = $this->user->get_admin();
+
+		// set message
+		$message = $this->session->userdata['first_name'].' '.$this->session->userdata['last_name'].' wants to apply to be a host! What do you think?';
+
+		// field entry collection
+		$mail = array(
+			'to_user_id' => $admin['id'],
+			'from_user_id' => $id,
+			'message' => $message
+		);
+
+		// load message model and send message
+		$this->load->model('message');
+		$this->message->send($mail);
+
+		redirect('/account');
+	}
+
 }
