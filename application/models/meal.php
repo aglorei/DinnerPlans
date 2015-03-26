@@ -139,6 +139,11 @@ class Meal extends CI_Model
 		return $this->db->where('id', $id)->update('meals', $meal);
 	}
 
+	public function update_current_price($price, $id)
+	{
+		return $this->db->where('id', $id)->set('current_price', $price)->update('meals');
+	}
+
 	//retrieves a single image for display on the errors page
 	public function get_meal_img($item_number)
 	{
@@ -204,6 +209,11 @@ class Meal extends CI_Model
 	{
 		$query = "UPDATE meals SET ended_at = NOW() WHERE id= ?";
 		return $this->db->query($query, array($id));
+	}
+
+	public function update_highest_bidder($user_id, $meal_id)
+	{
+		return $this->db->where('id', $meal_id)->set("highest_bidder", $user_id)->update('meals');
 	}
 }
 
