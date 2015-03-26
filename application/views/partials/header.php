@@ -125,4 +125,21 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		$(document).ready(function() {
+
+			function check_database()
+			{
+				$.get(
+						"/db_check",
+						function(data) {
+							console.log(data);
+						},
+						'json'
+					);
+				return false;
+			}
+			check_database();
+		});
+	</script>
 </div>

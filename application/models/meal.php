@@ -150,8 +150,13 @@ class Meal extends CI_Model
 	public function default_meal_image()
 	{
 		$query = "SELECT file_path AS img_path FROM images WHERE id = 1";
-		return $this->db->query($query)->row_array()['img_path'];
+		return $this->db->query($query)->row_array();
 	}
 
+	// retrieve all active meal listings
+	public function active_meals()
+	{
+		return $this->db->query("SELECT *, DATE_ADD(created_at, INTERVAL duration DAY) AS end_date FROM meals WHERE ended_at IS NULL ORDER BY end_date;")->result_array();
+	}
 }
 
