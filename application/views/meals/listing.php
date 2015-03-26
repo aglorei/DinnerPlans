@@ -61,6 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  	function timer() {
 		  	var now = Math.floor(Date.now() / 1000);
 		  	var seconds = end_time - now;
+		  	console.log(seconds);
 		    var days        = Math.floor(seconds/24/60/60);
 		    var hoursLeft   = Math.floor((seconds) - (days*86400));
 		    var hours       = Math.floor(hoursLeft/3600);
