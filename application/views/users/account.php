@@ -20,9 +20,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#<?= $this->session->flashdata('tab') ?>').addClass('active');
 
 		// set messages nested tab navigation via 'message_form' in flashdata
-		$('#<?= $this->session->flashdata('message_form') ?>-tab').addClass('active');
-		$('#<?= $this->session->flashdata('message_form') ?>').addClass('active');
+		$('#<?= $this->session->flashdata('message_controls') ?>-tab').addClass('active');
+		$('#<?= $this->session->flashdata('message_controls') ?>').addClass('active');
 
+		// set messages nested tab navigation via 'message_form' in flashdata
+		$('#<?= $this->session->flashdata('listing_controls') ?>-tab').addClass('active');
+		$('#<?= $this->session->flashdata('listing_controls') ?>').addClass('active');
+
+		// set correct user level in AdminControl tab
+<?php	if ($this->session->userdata('level') == 'Admin')
+		{
+			foreach ($admin['users'] as $user)
+			{ ?>
+				$('#level<?= $user['id'] ?>').val('<?= $user['level_id'] ?>');
+<?php		}
+		} ?>
+
+	});
+
+	// after user applies to host
+	$(document).on('submit', 'form#host_apply', function(){
+		$('form#host_apply').html('<h4>Thanks for applying! Keep an eye on your inbox...</h4>');
+		return false;
 	});
 
 	</script>
@@ -42,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<li id="myListings-tab" role="presentation"><a href="#myListings" data-toggle="tab">My Listings</a></li>
 <?php		if ($this->session->userdata('level') == 'Admin')
 			{ ?>
-				<li id="myAdminControls-tab" role="presentation"><a href="#myAdminControls" data-toggle="tab">Admin Controls</a></li>
+				<li id="AdminControls-tab" role="presentation"><a href="#AdminControls" data-toggle="tab">Admin Controls</a></li>
 <?php		} ?>
 		</ul>
 		<!-- Tab Contents -->
@@ -66,12 +85,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 			<!-- Listings -->
 			<div class="tab-pane fade in" id="myListings">
-				My Listings content
+<?php			if ($this->session->userdata('level') == 'Host')
+				{
+					$this->load->view('partials/listing_controls', $meals);
+				}
+				else
+				{
+					$this->load->view('partials/listing_controls');
+				} ?>
 			</div>
 			<!-- Admin Controls (if level == admin) -->
 <?php		if ($this->session->userdata('level') == 'Admin')
 			{ ?>
-			<div class="tab-pane fade in" id="myAdminControls">
+			<div class="tab-pane fade in" id="AdminControls">
 <?php			$this->load->view('partials/admin_controls', $admin); ?>
 			</div>
 <?php		} ?>

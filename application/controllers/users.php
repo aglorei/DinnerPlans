@@ -145,15 +145,27 @@ class Users extends CI_Controller
 			'sent' => $this->message->sent($this->session->userdata('id'))
 		);
 
+		// if host, load meal model and query for listing info
+		if ($this->session->userdata('level') == 'Host')
+		{
+			$this->load->model('meal');
+			$view_data['meals'] = $this->meal->show_meals_by_user($this->session->userdata('id'));
+		}
+
 		// set tab locations in flash data if not set
 		if (!$this->session->flashdata('tab'))
 		{
 			$this->session->set_flashdata('tab', 'dashboard');
 		}
 
-		if ($this->session->flashdata('message_controls'))
+		if (!$this->session->flashdata('message_controls'))
 		{
 			$this->session->set_flashdata('message_controls', 'inbox');
+		}
+
+		if (!$this->session->flashdata('listing_controls'))
+		{
+			$this->session->set_flashdata('listing_controls', 'listings');
 		}
 
 		$this->load->view('/users/account', $view_data);
@@ -250,6 +262,41 @@ class Users extends CI_Controller
 		}
 
 		$this->session->set_flashdata('tab', $this->session->flashdata('tab'));
+		redirect('/account');
+	}
+
+	public function update_privilege($id)
+	{
+		// if request is not admin, logout
+		if ($this->session->userdata('level') != 'Admin')
+		{
+			redirect('/logout');
+		}
+
+		// set validation rules
+		$this->form_validation->set_rules('level', 'user privilege level', 'required|in_list[4,5,9]', array('in_list' => 'Please choose either user, host, or admin privileges.'));
+
+		// if form fails to validate, redirect to edit($user_id)
+		if (!$this->form_validation->run())
+		{
+			// error collection
+			$errors['level'] = form_error('level');
+			$this->session->set_flashdata('errors', $errors);
+		}
+		else
+		{
+			// field entry collection
+			$user = array(
+				'id' => $id,
+				'level' => $this->input->post('level')
+			);
+
+			// load model user and update privilege
+			$this->load->model('user');
+			$this->user->update_privilege($user);
+		}
+
+		$this->session->set_flashdata('tab', 'AdminControls');
 		redirect('/account');
 	}
 }
