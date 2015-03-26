@@ -16,7 +16,7 @@ class Meal extends CI_Model
 		return $this->db->query("SELECT * FROM options;")->result_array();
 	}
 
-	// return all options for this meal 
+	// return all options for this meal
 	function show_options_by_meal($id)
 	{
 		$query = "SELECT GROUP_CONCAT(' ',o.option) AS options FROM options o INNER JOIN meal_has_options mho on o.id = mho.option_id WHERE mho.meal_id = ?;";
@@ -173,6 +173,31 @@ class Meal extends CI_Model
 	public function active_meals()
 	{
 		return $this->db->query("SELECT *, DATE_ADD(created_at, INTERVAL duration DAY) AS end_date FROM meals WHERE ended_at IS NULL ORDER BY end_date;")->result_array();
+	}
+
+	// create a new listing
+	public function create_meal($meal)
+	{
+		// create listing in meals table
+		$this->db->query('INSERT INTO meals (meal, description, user_id, initial_price, category_id, created_at, current_price, meal_date, duration) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?);', array($meal['meal'], $meal['description'], $meal['user_id'], $meal['initial_price'], $meal['category_id'], $meal['current_price'], $meal['meal_date'], $meal['duration']));
+
+		// set meal id
+		$meal_id = $this->db->insert_id();
+
+		// create image in images table
+		$this->db->query('INSERT INTO images (image, file_path, created_at) VALUES (?, ?, NOW());', array($meal['file_name'], '/uploads/'.$meal['file_name']));
+
+		// set image id
+		$image_id = $this->db->insert_id();
+
+		// link meal and image in meal_has_images table
+		$this->db->query('INSERT INTO meal_has_images (meal_id, image_id) VALUES (?, ?);', array($meal_id, $image_id));
+
+		// for each option, insert into database
+		foreach ($meal['options'] as $option)
+		{
+			$this->db->query('INSERT INTO meal_has_options (meal_id, option_id) VALUES (?, >);', array($meal_id, $option));
+		}
 	}
 }
 

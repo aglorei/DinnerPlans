@@ -192,9 +192,11 @@ class Meals extends CI_Controller
 		// set validation rules
 		$this->form_validation->set_rules('meal', 'meal title', 'trim|required|alpha_dash|min_length[2]');
 		$this->form_validation->set_rules('description', 'meal description', 'required|max_length[350]');
-		$this->form_validation->set_rules('email', 'email', 'required|valid_email|is_unique[users.email]');
-		$this->form_validation->set_rules('password', 'password', 'trim|required|min_length[5]|max_length[12]');
-		$this->form_validation->set_rules('password_confirm', 'password confirmation', 'trim|required|matches[password]');
+		$this->form_validation->set_rules('category_id', 'food category', 'required|in_list[1,2,3,4,5,7,8]', array('in_list' => 'Please choose one of the food categories.'));
+		$this->form_validation->set_rules('initial_price', 'price', 'required|integer|greater_than[0]');
+		$this->form_validation->set_rules('duration', 'bidding duration', 'required|integer|greater_than[0]|less_than[14]');
+		$this->form_validation->set_rules('meal_date', 'event date', 'required');
+
 		$config['upload_path'] = './uploads';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size'] = 500;
@@ -204,31 +206,76 @@ class Meals extends CI_Controller
 		// load upload library with above config rules
 		$this->load->library('upload', $config);
 
-		// if upload fails to validate, redirect back
-		if (!$this->upload->do_upload())
+		// if form fails to validate, redirect back
+		if (!$this->form_validation->run())
 		{
-			$errors['upload'] = $this->upload->display_errors();
-
+			// error collection
+			$errors = array(
+				'meal' => form_error('meal'),
+				'description' => form_error('description'),
+				'category_id' => form_error('category_id'),
+				'image' => $this->upload->display_errors(),
+				'initial_price' => form_error('initial_price'),
+				'duration' => form_error('duration'),
+				'meal_date' => form_error('meal_date')
+			);
 			$this->session->set_flashdata('errors', $errors);
 
-			redirect('/account');
+			// field entry collection
+			$errors_input = array(
+				'meal' => $this->input->post('meal'),
+				'description' => $this->input->post('description'),
+				'category_id' => $this->input->post('category_id'),
+				'initial_price' => $this->input->post('initial_price'),
+				'duration' => $this->input->post('duration'),
+				'meal_date' => $this->input->post('meal_date')
+			);
+			$this->session->set_flashdata('errors_input', $errors_input);
+
+			$this->session->set_flashdata('tab', 'myListings');
+			$this->session->set_flashdata('listing_controls', 'plan');
+		}
+		// check upload validation
+		if (!$this->upload->do_upload('image'))
+		{
+			$errors['image'] = $this->upload->display_errors();
+			$this->session->set_flashdata('errors', $errors);
 		}
 		// else, upload and update database with filepath
 		else
 		{
 			$data = $this->upload->data();
 
-			// var_dump($data);
+			// set options in case none selected
+			$options = array();
 
-			$upload = array(
-				'id' => $id,
-				'file_name' => $this->upload->data('file_name')
+			// if options selected, set options
+			if ($this->input->post('options'))
+			{
+				$options = $this->input->post('options');
+			}
+
+			// field entry collection
+			$meal = array(
+				'meal' => $this->input->post('meal'),
+				'description' => $this->input->post('description'),
+				'user_id' => $id,
+				'initial_price' => $this->input->post('initial_price'),
+				'category_id' => $this->input->post('category_id'),
+				'current_price' => $this->input->post('initial_price'),
+				'meal_date' => $this->input->post('meal_date'),
+				'duration' => $this->input->post('duration'),
+				'file_name' => $this->upload->data('file_name'),
+				'options' => $options
 			);
 
-			$this->load->model('user');
-			$this->user->upload_picture($upload);
+			$this->load->model('meal');
+			$this->meal->create_meal($meal);
 
-			redirect('/account');
+			$this->session->set_flashdata('tab', 'myListings');
+			$this->session->set_flashdata('listing_controls', 'listings');
 		}
+
+		redirect('/account');
 	}
 }

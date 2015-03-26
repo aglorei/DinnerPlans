@@ -155,7 +155,7 @@ class Users extends CI_Controller
 		// set tab locations in flash data if not set
 		if (!$this->session->flashdata('tab'))
 		{
-			$this->session->set_flashdata('tab', 'myListings');
+			$this->session->set_flashdata('tab', 'dashboard');
 		}
 
 		if (!$this->session->flashdata('message_controls'))
@@ -165,7 +165,7 @@ class Users extends CI_Controller
 
 		if (!$this->session->flashdata('listing_controls'))
 		{
-			$this->session->set_flashdata('listing_controls', 'plan');
+			$this->session->set_flashdata('listing_controls', 'listings');
 		}
 
 		$this->load->view('/users/account', $view_data);
@@ -188,8 +188,6 @@ class Users extends CI_Controller
 			$errors['upload'] = $this->upload->display_errors();
 
 			$this->session->set_flashdata('errors', $errors);
-
-			redirect('/account');
 		}
 		// else, upload and update database with filepath
 		else
@@ -205,9 +203,9 @@ class Users extends CI_Controller
 
 			$this->load->model('user');
 			$this->user->upload_picture($upload);
-
-			redirect('/account');
 		}
+
+		redirect('/account');
 	}
 
 	public function update($id)
