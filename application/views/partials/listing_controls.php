@@ -7,7 +7,7 @@
 
 		<div class="col-xs-12 col-sm-6">
 			<div class="listing-box">
-				<form id="host_apply" class="text-center" action="/messages/host_apply/<?= $this->session->userdata['id'] ?>" method="post">
+				<form id="host_apply" class="text-center" action="/messages/host_apply" method="post">
 					<h4>Want to cook fabulous dinners and give a shot at entertaining? All while meeting interesting new people and making some money to boot? Try your hand at hosting! One of our admins will receive your application for review, and we'll get back to you in a few days!</h4>
 
 					<!-- Submit Form -->

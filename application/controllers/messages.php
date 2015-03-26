@@ -49,27 +49,36 @@ class Messages extends CI_Controller
 		redirect('/account');
 	}
 
-	public function host_apply($id)
+	public function host_apply()
 	{
-		// load user model and get first admin
-		$this->load->model('user');
-		$admin = $this->user->get_admin();
+		if (!$this->session->userdata('level'))
+		{
+			$errors['register'] = 'Please register as a user first.';
+			$this->session->set_flashdata('errors', $errors);
+			redirect('/');
+		}
+		else
+		{
+			// load user model and get first admin
+			$this->load->model('user');
+			$admin = $this->user->get_admin();
 
-		// set message
-		$message = $this->session->userdata['first_name'].' '.$this->session->userdata['last_name'].' wants to apply to be a host! What do you think?';
+			// set message
+			$message = $this->session->userdata('first_name').' '.$this->session->userdata('last_name').' wants to apply to be a host! What do you think?';
 
-		// field entry collection
-		$mail = array(
-			'to_user_id' => $admin['id'],
-			'from_user_id' => $id,
-			'message' => $message
-		);
+			// field entry collection
+			$mail = array(
+				'to_user_id' => $admin['id'],
+				'from_user_id' => $this->session->userdata('id'),
+				'message' => $message
+			);
 
-		// load message model and send message
-		$this->load->model('message');
-		$this->message->send($mail);
-
-		redirect('account');
+			// load message model and send message
+			$this->load->model('message');
+			$this->message->send($mail);
+		}
+			$this->session->set_flashdata('tab', 'myListings');
+			redirect('/account');
 	}
 
 }

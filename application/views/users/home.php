@@ -69,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="carousel-caption">
 					<h1>We Would Love to Be Your Guests</h1>
 					<p class="lead">Do you think that you have what it takes to cook full course dinners and indulge guests with entertainment and mood setting? Apply to be one of our acclaimed hosts! You'll be able to meet interesting people, excercise your passion, and make some money to boot!</p>
-					<p><a class="btn btn-lg btn-primary blue" href="#">Apply now!</a></p>
+					<p><a class="btn btn-lg btn-primary blue" href="/messages/host_apply">Apply now!</a></p>
 				</div>
 			</div>
 		</div>
