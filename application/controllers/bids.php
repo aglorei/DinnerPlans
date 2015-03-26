@@ -111,7 +111,7 @@ class Bids extends CI_Controller
     // determine if the new bid is the highest bid
     if($bid_amount > $current_max_bid || (!$bid_count && $bid_amount >= $current_max_bid))
     {
-      $meal['current_price'] = $current_max_bid;
+      $meal['current_price'] = $current_max_bid + 5;
       $winner = true;
     }
     else 
@@ -190,23 +190,41 @@ class Bids extends CI_Controller
 
       foreach($listings as $index => $list)
       {
+
         $dbtime = strtotime($list['end_date']);
         $curtime = time();
+        $timeleft = $dbtime - $curtime;
 
-        if($curtime - $dbtime <= 0)
+        if($timeleft < $msec && $timeleft > 0)
+        {
+          $msec = $timeleft;
+        }
+
+        if($timeleft <= 0)
         {
           $this->close_listing($list);
         }
       }
-
-
     } catch (Exception $e) {
       echo json_encode($msec);
     }
+    echo json_encode($msec);
   }
 
   public function close_listing($list)
   {
-    
+    $this->Meal->end_listing($list['id']);
+
+    $bid_count = $this->Bid->item_bid_count($list['id']);
+    $this->load->model('Message');
+
+    if(!$bid_count)
+    {
+      $this->Message->send(array('to_user_id' => $list['user_id'], 'from_user_id' => 2, 'message' => "Your auction for " . $list['meal'] . " has ended without any bidders." ) );
+    } else {
+      $hb = $this->Bid->highest_bidder($list['id']);
+      $this->Message->send(array('to_user_id' => $hb['id'], 'from_user_id' => $list['user_id'], 'message' => "Congratulations, you are the highest bidder for " . $list['meal'] . "! Please proceed to checkout at your earliest convenience. Contact your host for further details."));
+      $this->Message->send(array('to_user_id'=> $list['user_id'], 'from_user_id' => $hb['id'], 'message' => "Your auction for " . $list['meal'] ." has ended and " . $hb['user_name'] ." is the highest bidder. They may contact you for further details."));
+    }
   }
 }

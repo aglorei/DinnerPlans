@@ -101,8 +101,7 @@ class Meal extends CI_Model
 	// retrieve the date the item will end (acquired by adding 'duration' to 'created_at' in days)
 	public function meal_end_time($item_number)
 	{
-		$interval = $this->db->where('id', $item_number)->get('meals')->row_array()['duration'];
-		$query = "SELECT DATE_ADD(created_at, INTERVAL " . $interval . " DAY) AS end_date FROM meals WHERE id=?";
+		$query = "SELECT DATE_ADD(created_at, INTERVAL duration DAY) AS end_date FROM meals WHERE id=?";
 
 		return $this->db->query($query, array('id'=> $item_number))->row_array()['end_date'];
 	}
@@ -173,6 +172,13 @@ class Meal extends CI_Model
 	public function active_meals()
 	{
 		return $this->db->query("SELECT *, DATE_ADD(created_at, INTERVAL duration DAY) AS end_date FROM meals WHERE ended_at IS NULL ORDER BY end_date;")->result_array();
+	}
+
+	// will close a listing after the auction expires
+	public function end_listing($id)
+	{
+		$query = "UPDATE meals SET ended_at = NOW() WHERE id= ?";
+		return $this->db->query($query, array($id));
 	}
 }
 
