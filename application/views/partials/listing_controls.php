@@ -81,7 +81,9 @@
 				</div>
 				<!-- Plan an Event! -->
 				<div class="tab-pane fade in" id="plan">
-
+					<div class="listing-box">
+<?php					$this->load->view('partials/listing_form') ?>
+					</div>
 				</div>
 			</div>
 		</div>

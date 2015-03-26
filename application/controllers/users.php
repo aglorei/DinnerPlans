@@ -155,7 +155,7 @@ class Users extends CI_Controller
 		// set tab locations in flash data if not set
 		if (!$this->session->flashdata('tab'))
 		{
-			$this->session->set_flashdata('tab', 'dashboard');
+			$this->session->set_flashdata('tab', 'myListings');
 		}
 
 		if (!$this->session->flashdata('message_controls'))
@@ -165,7 +165,7 @@ class Users extends CI_Controller
 
 		if (!$this->session->flashdata('listing_controls'))
 		{
-			$this->session->set_flashdata('listing_controls', 'listings');
+			$this->session->set_flashdata('listing_controls', 'plan');
 		}
 
 		$this->load->view('/users/account', $view_data);
