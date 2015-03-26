@@ -100,7 +100,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="container">
 		<div class="row content">
 			<div class="col-xs-7">
-				<h3><?=$meal["meal"]?></h3>
 				<img src="<?= $meal['img'] ?>" class="img-rounded">
 			</div>
 			<div class="col-xs-5">
@@ -123,7 +122,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</form>
 			</div>
 			<div class="bid col-xs-5">
-				<h3>About Your Host: <?=$meal["host"]?></h4>
+				<h3>About Your Host: <?=$meal["host"]?></h3>
 				<p><?=$meal["bio"]?></p>
 			</div>
 		</div>

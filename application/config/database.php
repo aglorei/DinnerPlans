@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'MYSQL35.MEDIA3.NET',
+	'hostname' => '208.118.241.35',
 	'username' => 'kanyewest',
 	'password' => 'dontreadbooks',
 	'database' => 'dinnerplans',
