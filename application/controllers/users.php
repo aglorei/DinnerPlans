@@ -112,7 +112,7 @@ class Users extends CI_Controller
 			$this->session->set_userdata('id', $this->db->insert_id());
 			$this->session->set_userdata('first_name', $user['first_name']);
 			$this->session->set_userdata('last_name', $user['last_name']);
-			$this->session->set_userdata('level', $user['level']);
+			$this->session->set_userdata('level', 'User');
 
 			redirect('/account');
 		}
@@ -225,7 +225,7 @@ class Users extends CI_Controller
 		$this->form_validation->set_rules('first_name', 'first name', 'trim|required|alpha_dash|min_length[2]');
 		$this->form_validation->set_rules('last_name', 'last name', 'trim|required|alpha_dash|min_length[2]');
 		$this->form_validation->set_rules('email', 'email', 'required|valid_email');
-		$this->form_validation->set_rules('description', 'description', 'max_length[140]');
+		$this->form_validation->set_rules('description', 'description', 'max_length[200]');
 
 		// if form fails to validate, redirect to edit($id)
 		if (!$this->form_validation->run())
