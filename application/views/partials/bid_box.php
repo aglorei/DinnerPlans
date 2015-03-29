@@ -17,7 +17,7 @@
 <?php			}
 				else
 				{ ?>
-					<div class="col-sm-12 col-md-4">
+					<div class="col-sm-12 col-md-4 text-right">
 						<h4 class="text-muted">Bidding has ended!</h4>
 					</div>
 <?php			} ?>
@@ -26,13 +26,9 @@
 			<p class="text-muted"><?= $bid['description'] ?></p>
 
 			<div class="bid-box row">
-				<!-- Current Price -->
-				<div class="col-sm-6 col-md-3">
-					<label>Current Price: $<?= $bid['current_price'] ?></label>
-				</div>
-				<!-- Your Bid -->
-				<div class="col-sm-6 col-md-3">
-					<label>Your Bid: $<?= $bid['bid'] ?></label>
+				<!-- Current Price and Your Bid -->
+				<div class="col-sm-12 col-md-6">
+					<label>Current Price: $<?= $bid['current_price'] ?> | Your Bid: $<?= $bid['bid'] ?></label>
 				</div>
 				<!-- Bid Status -->
 <?php			if (!$bid['ended_at'])
@@ -49,17 +45,17 @@
 							<label class="text-danger">You've been outbid by <?= $bid['highest_bidder_name'] ?>!</label>
 						</div>
 <?php				} ?>
-					<div class="col-sm-12">
-						<form class="place-bid" action="/bids/place_bid" method="post">
-							<!-- Bid amount -->
-							<label for="bid-amount">Place new bid:</label>
-							<input type="text" name="bid-amount" >
+						<div class="col-sm-12">
+							<form class="place-bid" action="/bids/place_bid" method="post">
+								<!-- Bid amount -->
+								<label for="bid-amount">Place new bid:</label>
+								<input type="text" name="bid-amount" >
 
-							<!-- meal_id as hidden input -->
-							<input type="hidden" name="meal-id" value="<?= $bid['meal_id'] ?>" />
-							<input class="btn blue" type="submit" value="Place bid" />
-						</form>
-					</div>
+								<!-- meal_id as hidden input -->
+								<input type="hidden" name="meal-id" value="<?= $bid['meal_id'] ?>" />
+								<input class="btn blue" type="submit" value="Place bid" />
+							</form>
+						</div>
 <?php			}
 				else
 				{

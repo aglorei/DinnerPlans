@@ -8,7 +8,7 @@ li a, h4{
 		margin-top: 10px;
 	}
 		.profile-box img{
-			height: 237px;
+			width: 100%;
 		}
 		.form-control{
 			display: inline-block;

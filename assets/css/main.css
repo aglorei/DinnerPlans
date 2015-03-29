@@ -7,7 +7,6 @@ h2{
 	color: #606c88;
 }
 	.blue{
-		border: 1px solid #606c88;
 		background-color: #606c88;
 		color: white;
 	}
@@ -23,8 +22,9 @@ h2{
 	.header form, .header .dropdown-toggle{
 		margin: 14px 0;
 	}
-		.dropdown-menu li{
-			margin-bottom: 5px;
+		.dropdown-menu input:not(.btn){
+			display: inline-block;
+			margin-bottom: 10px;
 		}
 #myModal label, #myModal input:not(.btn){
 	display: inline-block;

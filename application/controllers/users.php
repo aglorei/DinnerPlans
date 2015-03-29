@@ -21,10 +21,10 @@ class Users extends CI_Controller
 		$this->load->model('user');
 
 		// match email in query
-		$user_info = $this->user->login_user($this->input->post('email', TRUE));
+		$user_info = $this->user->login_user($this->input->post('email'));
 
 		// encrypt the post input with the database password as the salt
-		$encrypted_password = (crypt($this->input->post('password', TRUE), $user_info['password']));
+		$encrypted_password = (crypt($this->input->post('password'), $user_info['password']));
 
 		// if they match, assign id, first name, and level to session
 		if ($encrypted_password == $user_info['password'])
@@ -174,6 +174,8 @@ class Users extends CI_Controller
 		}
 
 		$this->load->view('/users/account', $view_data);
+
+		// var_dump($view_data['meals']);
 	}
 
 	public function upload_picture($id)

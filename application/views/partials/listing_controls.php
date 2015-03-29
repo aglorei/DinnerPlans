@@ -22,7 +22,7 @@
 <?php	}
 		else
 		{ ?>
-		<div class="col-xs-12 col-sm-3">
+		<div class="col-sm-12 col-md-3">
 			<!-- Tab Selectors -->
 			<ul class="nav nav-stacked nav-tabs" role="tablist">
 				<li id="listings-tab" role="presentation"><a href="#listings" data-toggle="tab">Listings</a></li>
@@ -30,7 +30,7 @@
 			</ul>
 		</div>
 
-		<div class="col-xs-12 col-sm-9">
+		<div class="col-sm-12 col-md-9">
 			<!-- Tab Contents -->
 			<div class="tab-content">
 				<!-- Listings -->
@@ -42,7 +42,7 @@
 							<div class="row">
 								<!-- Meal Name -->
 								<div class="col-xs-12 col-sm-9">
-									<h4><?= $meal['meal'] ?> on <?= $meal['meal_date'] ?></h4>
+									<a href="/meals/listing/<?= $meal['id'] ?>"><h4><?= $meal['meal'] ?> on <?= $meal['meal_date'] ?></h4></a>
 								</div>
 								<!-- Meal Category -->
 								<div class="col-xs-12 col-sm-3 text-right">

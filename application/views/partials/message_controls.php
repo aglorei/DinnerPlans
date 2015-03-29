@@ -1,6 +1,6 @@
 <div class="tab-pane fade in active" id="dashboard">
 	<div class="row">
-		<div class="col-xs-12 col-sm-3">
+		<div class="col-sm-12 col-md-3">
 			<!-- Tab Selectors -->
 			<ul class="nav nav-stacked nav-tabs" role="tablist">
 				<li id="inbox-tab" role="presentation"><a href="#inbox" data-toggle="tab">Inbox</a></li>
@@ -8,7 +8,7 @@
 				<li id="compose-tab" role="presentation"><a href="#compose" data-toggle="tab">Compose</a></li>
 			</ul>
 		</div>
-		<div class="col-xs-12 col-sm-9">
+		<div class="col-sm-12 col-md-9">
 			<!-- Tab Contents -->
 			<div class="tab-content">
 				<!-- Inbox -->
@@ -16,6 +16,7 @@
 <?php				foreach ($inbox as $mail)
 					{ ?>
 						<div class="mail-box">
+							<h5><span class="text-muted"><?= $mail['created_at'] ?></span></h5>
 							<h4>From: <span class="text-muted"><?= $mail['from_user'] ?></span></h4>
 							<h4>To: <span class="text-muted"><?= $mail['to_user'] ?></span></h4>
 							<p class="text-muted"><?= $mail['message'] ?></p>
@@ -42,6 +43,7 @@
 <?php				foreach ($sent as $mail)
 					{ ?>
 						<div class="mail-box">
+							<h5><span class="text-muted"><?= $mail['created_at'] ?></span></h5>
 							<h4>From: <span class="text-muted"><?= $mail['from_user'] ?></span></h4>
 							<h4>To: <span class="text-muted"><?= $mail['to_user'] ?></span></h4>
 							<p class="text-muted"><?= $mail['message'] ?></p>
